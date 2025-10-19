@@ -1,0 +1,45 @@
+import { PrismaService } from "../prisma/prisma.service";
+export declare class GalleryPairsService {
+    private prisma;
+    constructor(prisma: PrismaService);
+    createPairsAutomatically(albumId: number): Promise<void>;
+    getPairsWithPhotos(albumId: number): Promise<({
+        beforePhoto: import("@prisma/client/runtime").GetResult<{
+            id: number;
+            albumId: number;
+            url: string;
+            publicId: string;
+            title: string;
+            description: string;
+            tag: string;
+            createdAt: Date;
+            updatedAt: Date;
+        }, unknown, never> & {};
+        afterPhoto: import("@prisma/client/runtime").GetResult<{
+            id: number;
+            albumId: number;
+            url: string;
+            publicId: string;
+            title: string;
+            description: string;
+            tag: string;
+            createdAt: Date;
+            updatedAt: Date;
+        }, unknown, never> & {};
+    } & import("@prisma/client/runtime").GetResult<{
+        id: number;
+        albumId: number;
+        beforePhotoId: number;
+        afterPhotoId: number;
+        label: string;
+        collectionId: number;
+        createdAt: Date;
+        updatedAt: Date;
+    }, unknown, never> & {})[]>;
+    getCollections(albumId: number): Promise<{
+        id: number;
+        pairs: any;
+        count: any;
+    }[]>;
+    canCreatePairs(albumId: number): Promise<boolean>;
+}

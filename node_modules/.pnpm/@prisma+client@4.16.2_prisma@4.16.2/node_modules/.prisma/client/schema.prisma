@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean? @default(false)
+  authorId  Int?
+  User      User?    @relation(fields: [authorId], references: [id])
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String  @unique
+  password  String
+  name      String?
+  Post      Post[]
+  passwordResetTokens PasswordResetToken[]
+}
+
+/// Content block for frontend sections
+model ContentBlock {
+  id          Int      @id @default(autoincrement())
+  blockNumber Int      @unique
+  name        String   @unique
+  text        String?
+  imageUrl    String?
+  imagePublicId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum AlbumType {
+  GENERAL
+  BEFORE_AFTER
+}
+
+model Album {
+  id        Int        @id @default(autoincrement())
+  name      String
+  slug      String     @unique
+  type      AlbumType  @default(GENERAL)
+  photos    GalleryPhoto[]
+  pairs     BeforeAfterPair[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model GalleryPhoto {
+  id        Int      @id @default(autoincrement())
+  albumId   Int
+  url       String
+  publicId  String?
+  title     String?
+  description String?
+  tag       String?  // 🏷️ Мітка для фільтрації: 'before', 'after', 'general'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  album     Album    @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  // Relations to before/after pairs
+  beforePairs BeforeAfterPair[] @relation("BeforePhoto")
+  afterPairs  BeforeAfterPair[] @relation("AfterPhoto")
+}
+
+model BeforeAfterPair {
+  id            Int           @id @default(autoincrement())
+  albumId       Int
+  beforePhotoId Int
+  afterPhotoId  Int
+  label         String?
+  collectionId  Int?          // 🆕 ID колекції (1, 2, 3...)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  album        Album         @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  beforePhoto  GalleryPhoto  @relation("BeforePhoto", fields: [beforePhotoId], references: [id])
+  afterPhoto   GalleryPhoto  @relation("AfterPhoto", fields: [afterPhotoId], references: [id])
+}
+
+/// Token storage for password reset flow
+model PasswordResetToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Hero {
+  id              Int      @id @default(autoincrement())
+  title           String
+  subtitle        String
+  backgroundImage String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
