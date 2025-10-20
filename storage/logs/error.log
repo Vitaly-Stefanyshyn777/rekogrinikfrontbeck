@@ -308,3 +308,10 @@
 {"context":"NotFoundError","level":"error","message":"No Hero found -> (trace not provided !)","timestamp":"2025-10-20T11:16:19.618Z"}
 {"context":"NotFoundError","level":"error","message":"No Hero found -> (trace not provided !)","timestamp":"2025-10-20T11:19:21.564Z"}
 {"context":"NotFoundError","level":"error","message":"No Hero found -> (trace not provided !)","timestamp":"2025-10-20T11:19:21.814Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T11:26:51.657Z"}
+{"context":"BadRequestException","level":"error","message":"Expected property name or '}' in JSON at position 1 (line 1 column 2) -> (trace not provided !)","timestamp":"2025-10-20T11:53:56.057Z"}
+{"context":"BadRequestException","level":"error","message":"Bad Request Exception -> (trace not provided !)","timestamp":"2025-10-20T12:01:43.138Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/public/form/2 -> (trace not provided !)","timestamp":"2025-10-20T12:08:50.462Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/public/form -> (trace not provided !)","timestamp":"2025-10-20T12:09:01.622Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/public/forms -> (trace not provided !)","timestamp":"2025-10-20T12:09:03.443Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/public/form?limit=5 -> (trace not provided !)","timestamp":"2025-10-20T12:09:05.813Z"}

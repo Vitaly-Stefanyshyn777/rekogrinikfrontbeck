@@ -13,6 +13,7 @@ const publicContent_controller_1 = require("./publicContent.controller");
 const publicGallery_controller_1 = require("./publicGallery.controller");
 const publicHero_controller_1 = require("./publicHero.controller");
 const gallery_pairs_service_1 = require("../gallery/gallery-pairs.service");
+const publicForm_controller_1 = require("./publicForm.controller");
 let PublicModule = class PublicModule {
 };
 PublicModule = __decorate([
@@ -22,6 +23,7 @@ PublicModule = __decorate([
             publicContent_controller_1.PublicContentController,
             publicGallery_controller_1.PublicGalleryController,
             publicHero_controller_1.PublicHeroController,
+            publicForm_controller_1.PublicFormController,
         ],
         providers: [gallery_pairs_service_1.GalleryPairsService],
     })

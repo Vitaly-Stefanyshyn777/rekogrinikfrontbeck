@@ -104,3 +104,22 @@ model Hero {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
+/// Public form submissions from website
+model FormSubmission {
+  id           Int       @id @default(autoincrement())
+  name         String
+  phone        String
+  email        String?
+  workType     String?
+  message      String?
+  consent      Boolean   @default(false)
+  address      String?
+  contactTime  String?
+  source       Json?
+  files        Json?
+  locale       String?   @default("uk")
+  userAgent    String?
+  ip           String?
+  createdAt    DateTime  @default(now())
+}

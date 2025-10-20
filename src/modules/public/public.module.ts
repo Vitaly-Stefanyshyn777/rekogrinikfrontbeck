@@ -4,6 +4,7 @@ import { PublicContentController } from "./publicContent.controller";
 import { PublicGalleryController } from "./publicGallery.controller";
 import { PublicHeroController } from "./publicHero.controller";
 import { GalleryPairsService } from "../gallery/gallery-pairs.service";
+import { PublicFormController } from "./publicForm.controller";
 
 @Module({
   imports: [PrismaModule],
@@ -11,6 +12,7 @@ import { GalleryPairsService } from "../gallery/gallery-pairs.service";
     PublicContentController,
     PublicGalleryController,
     PublicHeroController,
+    PublicFormController,
   ],
   providers: [GalleryPairsService],
 })
