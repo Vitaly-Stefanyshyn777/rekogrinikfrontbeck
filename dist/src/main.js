@@ -26,7 +26,9 @@ async function bootstrap() {
             if (!origin ||
                 origin.startsWith("http://localhost:") ||
                 origin.startsWith("http://127.0.0.1:") ||
-                origin === process.env.FRONTEND_URL) {
+                origin === process.env.FRONTEND_URL ||
+                origin === "https://rekogrinikadmin-production.up.railway.app" ||
+                origin.startsWith("https://rekogrinikadmin-production.up.railway.app")) {
                 callback(null, true);
             }
             else {
