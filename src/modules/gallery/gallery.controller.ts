@@ -87,6 +87,19 @@ export class GalleryController {
     return this.galleryService.createPair(dto);
   }
 
+  @Post("albums/:albumId/pairs")
+  createPairForAlbum(
+    @Param("albumId", ParseIntPipe) albumId: number,
+    @Body() dto: { beforePhotoId: number; afterPhotoId: number; label?: string }
+  ) {
+    return this.galleryService.createPair({
+      albumId,
+      beforePhotoId: dto.beforePhotoId,
+      afterPhotoId: dto.afterPhotoId,
+      label: dto.label,
+    });
+  }
+
   @Delete("pairs/:id")
   deletePair(@Param("id", ParseIntPipe) id: number) {
     return this.galleryService.deletePair(id);
@@ -95,5 +108,33 @@ export class GalleryController {
   @Post("albums/:albumId/recreate-pairs")
   recreatePairs(@Param("albumId", ParseIntPipe) albumId: number) {
     return this.galleryService.recreatePairs(albumId);
+  }
+
+  @Delete("albums/:albumId/collections/:collectionId")
+  deleteCollection(
+    @Param("albumId", ParseIntPipe) albumId: number,
+    @Param("collectionId", ParseIntPipe) collectionId: number,
+    @Query("deletePhotos") deletePhotos?: string
+  ) {
+    const shouldDeletePhotos = deletePhotos === "true";
+    return this.galleryService.deleteCollection(
+      albumId,
+      collectionId,
+      shouldDeletePhotos
+    );
+  }
+
+  @Get("albums/:albumId/pairs")
+  getPairsByCollection(
+    @Param("albumId", ParseIntPipe) albumId: number,
+    @Query("collectionId") collectionId?: string
+  ) {
+    if (collectionId) {
+      return this.galleryService.getPairsByCollection(
+        albumId,
+        parseInt(collectionId)
+      );
+    }
+    return this.galleryService.getPairs(albumId);
   }
 }

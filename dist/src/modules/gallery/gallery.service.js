@@ -109,6 +109,18 @@ let GalleryService = class GalleryService {
         await this.ensureAlbum(albumId);
         await this.pairsService.createPairsAutomatically(albumId);
     }
+    async deleteCollection(albumId, collectionId, deletePhotos = false) {
+        await this.ensureAlbum(albumId);
+        return this.pairsService.deleteCollection(albumId, collectionId, deletePhotos);
+    }
+    async getPairsByCollection(albumId, collectionId) {
+        await this.ensureAlbum(albumId);
+        return this.pairsService.getPairsByCollection(albumId, collectionId);
+    }
+    async getPairs(albumId) {
+        await this.ensureAlbum(albumId);
+        return this.pairsService.getPairsWithPhotos(albumId);
+    }
 };
 GalleryService = __decorate([
     (0, common_1.Injectable)(),

@@ -17,9 +17,35 @@ export declare class UploadController {
         description?: string;
         tag?: string;
     }): Promise<{
-        id: number;
+        id: any;
         url: string;
         publicId: string;
-        title: string;
+        title: any;
+    }>;
+    replaceBeforePhoto(pairId: number, file: Express.Multer.File, body: {
+        title?: string;
+        description?: string;
+        deleteOld?: string;
+    }): Promise<{
+        pairId: any;
+        beforePhoto: {
+            id: any;
+            url: any;
+            publicId: any;
+            title: any;
+        };
+    }>;
+    replaceAfterPhoto(pairId: number, file: Express.Multer.File, body: {
+        title?: string;
+        description?: string;
+        deleteOld?: string;
+    }): Promise<{
+        pairId: any;
+        afterPhoto: {
+            id: any;
+            url: any;
+            publicId: any;
+            title: any;
+        };
     }>;
 }

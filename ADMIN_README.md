@@ -353,6 +353,40 @@ const response = await fetch("http://localhost:3002/api/v1/gallery/pairs/1", {
 });
 ```
 
+### **5. Видалити всю колекцію (3 пари "До і Після"):**
+
+```javascript
+// DELETE /api/v1/gallery/albums/:albumId/collections/:collectionId
+const response = await fetch(
+  "http://localhost:3002/api/v1/gallery/albums/2/collections/1",
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+);
+
+// З видаленням фото з Cloudinary
+const responseWithPhotos = await fetch(
+  "http://localhost:3002/api/v1/gallery/albums/2/collections/1?deletePhotos=true",
+  {
+    method: "DELETE",
+    credentials: "include",
+  }
+);
+```
+
+### **6. Отримати пари конкретної колекції:**
+
+```javascript
+// GET /api/v1/gallery/albums/:albumId/pairs?collectionId=1
+const pairs = await fetch(
+  "http://localhost:3002/api/v1/gallery/albums/2/pairs?collectionId=1",
+  {
+    credentials: "include",
+  }
+);
+```
+
 ---
 
 ## 📤 **ЗАВАНТАЖЕННЯ ЗОБРАЖЕНЬ**
@@ -467,6 +501,54 @@ const uploadAfter = await fetch("http://localhost:3002/api/v1/upload/photo", {
 });
 
 // 5. Пари створюються автоматично!
+```
+
+### **3. Замінити фото "До" в парі:**
+
+```javascript
+// PUT /api/v1/upload/pairs/:pairId/before
+const fileInput = document.getElementById("beforeFileInput");
+const formData = new FormData();
+formData.append("file", fileInput.files[0]);
+formData.append("title", "Нова назва 'До'");
+formData.append("description", "Новий опис");
+formData.append("deleteOld", "true"); // Видалити старе фото
+
+const response = await fetch(
+  "http://localhost:3002/api/v1/upload/pairs/1/before",
+  {
+    method: "PUT",
+    credentials: "include",
+    body: formData,
+  }
+);
+
+const result = await response.json();
+console.log('Фото "До" замінено:', result);
+```
+
+### **4. Замінити фото "Після" в парі:**
+
+```javascript
+// PUT /api/v1/upload/pairs/:pairId/after
+const fileInput = document.getElementById("afterFileInput");
+const formData = new FormData();
+formData.append("file", fileInput.files[0]);
+formData.append("title", "Нова назва 'Після'");
+formData.append("description", "Новий опис");
+formData.append("deleteOld", "true"); // Видалити старе фото
+
+const response = await fetch(
+  "http://localhost:3002/api/v1/upload/pairs/1/after",
+  {
+    method: "PUT",
+    credentials: "include",
+    body: formData,
+  }
+);
+
+const result = await response.json();
+console.log('Фото "Після" замінено:', result);
 ```
 
 ---

@@ -88,6 +88,116 @@ let UploadController = class UploadController {
             throw new common_1.BadRequestException(`Upload failed: ${error.message}`);
         }
     }
+    async replaceBeforePhoto(pairId, file, body) {
+        if (!file) {
+            throw new common_1.BadRequestException("No file uploaded");
+        }
+        try {
+            const { url, publicId } = await this.uploadService.uploadImage(file.buffer, "rekogrinik");
+            const pair = await this.prisma.beforeAfterPair.findUnique({
+                where: { id: pairId },
+                include: { album: true, beforePhoto: true },
+            });
+            if (!pair) {
+                throw new common_1.BadRequestException("Pair not found");
+            }
+            const newPhoto = await this.prisma.galleryPhoto.create({
+                data: {
+                    albumId: pair.albumId,
+                    url: url,
+                    publicId: publicId,
+                    title: body.title,
+                    description: body.description,
+                    tag: "before",
+                },
+            });
+            const updatedPair = await this.pairsService.replaceBeforePhoto(pairId, newPhoto.id);
+            if (body.deleteOld === "true" && pair.beforePhoto) {
+                const oldPhoto = pair.beforePhoto;
+                const otherPairs = await this.prisma.beforeAfterPair.findMany({
+                    where: {
+                        OR: [{ beforePhotoId: oldPhoto.id }, { afterPhotoId: oldPhoto.id }],
+                    },
+                });
+                if (otherPairs.length === 0) {
+                    if (oldPhoto.publicId) {
+                        await this.uploadService.deleteImage(oldPhoto.publicId);
+                    }
+                    await this.prisma.galleryPhoto.delete({
+                        where: { id: oldPhoto.id },
+                    });
+                }
+            }
+            return {
+                pairId: updatedPair.id,
+                beforePhoto: {
+                    id: newPhoto.id,
+                    url: newPhoto.url,
+                    publicId: newPhoto.publicId,
+                    title: newPhoto.title,
+                },
+            };
+        }
+        catch (error) {
+            console.error("Replace before photo error:", error);
+            throw new common_1.BadRequestException(`Replace failed: ${error.message}`);
+        }
+    }
+    async replaceAfterPhoto(pairId, file, body) {
+        if (!file) {
+            throw new common_1.BadRequestException("No file uploaded");
+        }
+        try {
+            const { url, publicId } = await this.uploadService.uploadImage(file.buffer, "rekogrinik");
+            const pair = await this.prisma.beforeAfterPair.findUnique({
+                where: { id: pairId },
+                include: { album: true, afterPhoto: true },
+            });
+            if (!pair) {
+                throw new common_1.BadRequestException("Pair not found");
+            }
+            const newPhoto = await this.prisma.galleryPhoto.create({
+                data: {
+                    albumId: pair.albumId,
+                    url: url,
+                    publicId: publicId,
+                    title: body.title,
+                    description: body.description,
+                    tag: "after",
+                },
+            });
+            const updatedPair = await this.pairsService.replaceAfterPhoto(pairId, newPhoto.id);
+            if (body.deleteOld === "true" && pair.afterPhoto) {
+                const oldPhoto = pair.afterPhoto;
+                const otherPairs = await this.prisma.beforeAfterPair.findMany({
+                    where: {
+                        OR: [{ beforePhotoId: oldPhoto.id }, { afterPhotoId: oldPhoto.id }],
+                    },
+                });
+                if (otherPairs.length === 0) {
+                    if (oldPhoto.publicId) {
+                        await this.uploadService.deleteImage(oldPhoto.publicId);
+                    }
+                    await this.prisma.galleryPhoto.delete({
+                        where: { id: oldPhoto.id },
+                    });
+                }
+            }
+            return {
+                pairId: updatedPair.id,
+                afterPhoto: {
+                    id: newPhoto.id,
+                    url: newPhoto.url,
+                    publicId: newPhoto.publicId,
+                    title: newPhoto.title,
+                },
+            };
+        }
+        catch (error) {
+            console.error("Replace after photo error:", error);
+            throw new common_1.BadRequestException(`Replace failed: ${error.message}`);
+        }
+    }
 };
 __decorate([
     (0, common_1.Post)("image"),
@@ -134,6 +244,46 @@ __decorate([
     __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UploadController.prototype, "uploadPhoto", null);
+__decorate([
+    (0, common_1.Put)("pairs/:pairId/before"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("file", {
+        limits: { fileSize: 5 * 1024 * 1024 },
+        fileFilter: (req, file, cb) => {
+            if (file.mimetype.match(/\/(jpg|jpeg|png|gif|webp|svg\+xml)$/)) {
+                cb(null, true);
+            }
+            else {
+                cb(new common_1.BadRequestException("Only image files allowed"), false);
+            }
+        },
+    })),
+    __param(0, (0, common_1.Param)("pairId", common_1.ParseIntPipe)),
+    __param(1, (0, common_1.UploadedFile)()),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object, Object]),
+    __metadata("design:returntype", Promise)
+], UploadController.prototype, "replaceBeforePhoto", null);
+__decorate([
+    (0, common_1.Put)("pairs/:pairId/after"),
+    (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)("file", {
+        limits: { fileSize: 5 * 1024 * 1024 },
+        fileFilter: (req, file, cb) => {
+            if (file.mimetype.match(/\/(jpg|jpeg|png|gif|webp|svg\+xml)$/)) {
+                cb(null, true);
+            }
+            else {
+                cb(new common_1.BadRequestException("Only image files allowed"), false);
+            }
+        },
+    })),
+    __param(0, (0, common_1.Param)("pairId", common_1.ParseIntPipe)),
+    __param(1, (0, common_1.UploadedFile)()),
+    __param(2, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object, Object]),
+    __metadata("design:returntype", Promise)
+], UploadController.prototype, "replaceAfterPhoto", null);
 UploadController = __decorate([
     (0, common_1.Controller)("upload"),
     (0, common_1.UseGuards)(auth_jwt_guard_1.JwtAuthGuard, throttler_1.ThrottlerGuard),

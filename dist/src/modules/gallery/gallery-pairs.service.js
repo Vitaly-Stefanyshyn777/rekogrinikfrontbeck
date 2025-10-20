@@ -91,6 +91,93 @@ let GalleryPairsService = class GalleryPairsService {
         const afterCount = photos.filter((photo) => photo.tag === "after").length;
         return beforeCount >= 3 && afterCount >= 3;
     }
+    async deleteCollection(albumId, collectionId, deletePhotos = false) {
+        const pairs = await this.prisma.beforeAfterPair.findMany({
+            where: { albumId, collectionId },
+            include: { beforePhoto: true, afterPhoto: true },
+        });
+        if (pairs.length === 0) {
+            return { deletedPairs: 0, deletedPhotos: 0 };
+        }
+        await this.prisma.beforeAfterPair.deleteMany({
+            where: { albumId, collectionId },
+        });
+        let deletedPhotos = 0;
+        if (deletePhotos) {
+            const photoIds = new Set();
+            pairs.forEach((pair) => {
+                photoIds.add(pair.beforePhotoId);
+                photoIds.add(pair.afterPhotoId);
+            });
+            for (const photoId of photoIds) {
+                const otherPairs = await this.prisma.beforeAfterPair.findMany({
+                    where: {
+                        OR: [{ beforePhotoId: photoId }, { afterPhotoId: photoId }],
+                    },
+                });
+                if (otherPairs.length === 0) {
+                    const photo = await this.prisma.galleryPhoto.findUnique({
+                        where: { id: photoId },
+                    });
+                    if (photo) {
+                        if (photo.publicId) {
+                            try {
+                                console.log(`Would delete from Cloudinary: ${photo.publicId}`);
+                            }
+                            catch (error) {
+                                console.error(`Failed to delete from Cloudinary: ${photo.publicId}`, error);
+                            }
+                        }
+                        await this.prisma.galleryPhoto.delete({
+                            where: { id: photoId },
+                        });
+                        deletedPhotos++;
+                    }
+                }
+            }
+        }
+        return { deletedPairs: pairs.length, deletedPhotos };
+    }
+    async getPairsByCollection(albumId, collectionId) {
+        return this.prisma.beforeAfterPair.findMany({
+            where: { albumId, collectionId },
+            include: {
+                beforePhoto: true,
+                afterPhoto: true,
+            },
+            orderBy: { createdAt: "asc" },
+        });
+    }
+    async replaceBeforePhoto(pairId, newPhotoId) {
+        const pair = await this.prisma.beforeAfterPair.findUnique({
+            where: { id: pairId },
+            include: { beforePhoto: true },
+        });
+        if (!pair) {
+            throw new Error("Pair not found");
+        }
+        const updatedPair = await this.prisma.beforeAfterPair.update({
+            where: { id: pairId },
+            data: { beforePhotoId: newPhotoId },
+            include: { beforePhoto: true, afterPhoto: true },
+        });
+        return updatedPair;
+    }
+    async replaceAfterPhoto(pairId, newPhotoId) {
+        const pair = await this.prisma.beforeAfterPair.findUnique({
+            where: { id: pairId },
+            include: { afterPhoto: true },
+        });
+        if (!pair) {
+            throw new Error("Pair not found");
+        }
+        const updatedPair = await this.prisma.beforeAfterPair.update({
+            where: { id: pairId },
+            data: { afterPhotoId: newPhotoId },
+            include: { beforePhoto: true, afterPhoto: true },
+        });
+        return updatedPair;
+    }
 };
 GalleryPairsService = __decorate([
     (0, common_1.Injectable)(),

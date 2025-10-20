@@ -142,4 +142,27 @@ export class GalleryService {
     await this.ensureAlbum(albumId);
     await this.pairsService.createPairsAutomatically(albumId);
   }
+
+  public async deleteCollection(
+    albumId: number,
+    collectionId: number,
+    deletePhotos: boolean = false
+  ): Promise<{ deletedPairs: number; deletedPhotos: number }> {
+    await this.ensureAlbum(albumId);
+    return this.pairsService.deleteCollection(
+      albumId,
+      collectionId,
+      deletePhotos
+    );
+  }
+
+  public async getPairsByCollection(albumId: number, collectionId: number) {
+    await this.ensureAlbum(albumId);
+    return this.pairsService.getPairsByCollection(albumId, collectionId);
+  }
+
+  public async getPairs(albumId: number) {
+    await this.ensureAlbum(albumId);
+    return this.pairsService.getPairsWithPhotos(albumId);
+  }
 }

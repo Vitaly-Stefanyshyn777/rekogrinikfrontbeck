@@ -51,11 +51,29 @@ let GalleryController = class GalleryController {
     createPair(dto) {
         return this.galleryService.createPair(dto);
     }
+    createPairForAlbum(albumId, dto) {
+        return this.galleryService.createPair({
+            albumId,
+            beforePhotoId: dto.beforePhotoId,
+            afterPhotoId: dto.afterPhotoId,
+            label: dto.label,
+        });
+    }
     deletePair(id) {
         return this.galleryService.deletePair(id);
     }
     recreatePairs(albumId) {
         return this.galleryService.recreatePairs(albumId);
+    }
+    deleteCollection(albumId, collectionId, deletePhotos) {
+        const shouldDeletePhotos = deletePhotos === "true";
+        return this.galleryService.deleteCollection(albumId, collectionId, shouldDeletePhotos);
+    }
+    getPairsByCollection(albumId, collectionId) {
+        if (collectionId) {
+            return this.galleryService.getPairsByCollection(albumId, parseInt(collectionId));
+        }
+        return this.galleryService.getPairs(albumId);
     }
 };
 __decorate([
@@ -131,6 +149,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], GalleryController.prototype, "createPair", null);
 __decorate([
+    (0, common_1.Post)("albums/:albumId/pairs"),
+    __param(0, (0, common_1.Param)("albumId", common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", void 0)
+], GalleryController.prototype, "createPairForAlbum", null);
+__decorate([
     (0, common_1.Delete)("pairs/:id"),
     __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
     __metadata("design:type", Function),
@@ -144,6 +170,23 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], GalleryController.prototype, "recreatePairs", null);
+__decorate([
+    (0, common_1.Delete)("albums/:albumId/collections/:collectionId"),
+    __param(0, (0, common_1.Param)("albumId", common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Param)("collectionId", common_1.ParseIntPipe)),
+    __param(2, (0, common_1.Query)("deletePhotos")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, String]),
+    __metadata("design:returntype", void 0)
+], GalleryController.prototype, "deleteCollection", null);
+__decorate([
+    (0, common_1.Get)("albums/:albumId/pairs"),
+    __param(0, (0, common_1.Param)("albumId", common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Query)("collectionId")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, String]),
+    __metadata("design:returntype", void 0)
+], GalleryController.prototype, "getPairsByCollection", null);
 GalleryController = __decorate([
     (0, common_1.Controller)("gallery"),
     (0, common_1.UseGuards)(auth_jwt_guard_1.JwtAuthGuard),

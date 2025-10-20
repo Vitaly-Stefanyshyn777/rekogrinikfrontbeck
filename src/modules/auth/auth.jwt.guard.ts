@@ -2,14 +2,15 @@ import {
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-} from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
-import { User } from '@prisma/client';
+} from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { Reflector } from "@nestjs/core";
+import { Observable } from "rxjs";
+import { User } from "@prisma/client";
+// import { User } from "../user/user.entity";
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class JwtAuthGuard extends AuthGuard("jwt") {
   roles: string[];
 
   constructor(private reflector: Reflector) {
@@ -17,9 +18,9 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   canActivate(
-    context: ExecutionContext,
+    context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
-    this.roles = this.reflector.get<string[]>('roles', context.getHandler());
+    this.roles = this.reflector.get<string[]>("roles", context.getHandler());
     return super.canActivate(context);
   }
 

@@ -22,7 +22,17 @@ async function bootstrap() {
     app.setGlobalPrefix(global_constants_1.API_PREFIX);
     app.useGlobalFilters(new all_exceptions_filter_1.AllExceptionsFilter(app.get(core_1.HttpAdapterHost)), new invalid_form_exception_filter_1.InvalidFormExceptionFilter());
     app.use((0, cors_1.default)({
-        origin: process.env.FRONTEND_URL || ["http://localhost:3000"],
+        origin: (origin, callback) => {
+            if (!origin ||
+                origin.startsWith("http://localhost:") ||
+                origin.startsWith("http://127.0.0.1:") ||
+                origin === process.env.FRONTEND_URL) {
+                callback(null, true);
+            }
+            else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
         methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
         credentials: true,
         allowedHeaders: ["Content-Type", "Authorization"],

@@ -13,13 +13,13 @@ exports.JwtAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const passport_1 = require("@nestjs/passport");
 const core_1 = require("@nestjs/core");
-let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)('jwt') {
+let JwtAuthGuard = class JwtAuthGuard extends (0, passport_1.AuthGuard)("jwt") {
     constructor(reflector) {
         super(reflector);
         this.reflector = reflector;
     }
     canActivate(context) {
-        this.roles = this.reflector.get('roles', context.getHandler());
+        this.roles = this.reflector.get("roles", context.getHandler());
         return super.canActivate(context);
     }
     handleRequest(err, user) {

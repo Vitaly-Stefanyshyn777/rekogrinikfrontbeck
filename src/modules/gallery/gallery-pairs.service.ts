@@ -126,4 +126,139 @@ export class GalleryPairsService {
 
     return beforeCount >= 3 && afterCount >= 3;
   }
+
+  /**
+   * Видалити всю колекцію (3 пари "До і Після")
+   */
+  async deleteCollection(
+    albumId: number,
+    collectionId: number,
+    deletePhotos: boolean = false
+  ): Promise<{ deletedPairs: number; deletedPhotos: number }> {
+    // Знайти всі пари цієї колекції
+    const pairs = await this.prisma.beforeAfterPair.findMany({
+      where: { albumId, collectionId },
+      include: { beforePhoto: true, afterPhoto: true },
+    });
+
+    if (pairs.length === 0) {
+      return { deletedPairs: 0, deletedPhotos: 0 };
+    }
+
+    // Видалити пари
+    await this.prisma.beforeAfterPair.deleteMany({
+      where: { albumId, collectionId },
+    });
+
+    let deletedPhotos = 0;
+
+    if (deletePhotos) {
+      // Зібрати всі унікальні фото ID
+      const photoIds = new Set<number>();
+      pairs.forEach((pair) => {
+        photoIds.add(pair.beforePhotoId);
+        photoIds.add(pair.afterPhotoId);
+      });
+
+      // Перевірити чи фото використовуються в інших парах
+      for (const photoId of photoIds) {
+        const otherPairs = await this.prisma.beforeAfterPair.findMany({
+          where: {
+            OR: [{ beforePhotoId: photoId }, { afterPhotoId: photoId }],
+          },
+        });
+
+        // Якщо фото не використовується в інших парах - видалити
+        if (otherPairs.length === 0) {
+          const photo = await this.prisma.galleryPhoto.findUnique({
+            where: { id: photoId },
+          });
+
+          if (photo) {
+            // Видалити з Cloudinary (якщо є publicId)
+            if (photo.publicId) {
+              try {
+                // Тут потрібно буде додати UploadService для видалення з Cloudinary
+                console.log(`Would delete from Cloudinary: ${photo.publicId}`);
+              } catch (error) {
+                console.error(
+                  `Failed to delete from Cloudinary: ${photo.publicId}`,
+                  error
+                );
+              }
+            }
+
+            // Видалити з БД
+            await this.prisma.galleryPhoto.delete({
+              where: { id: photoId },
+            });
+
+            deletedPhotos++;
+          }
+        }
+      }
+    }
+
+    return { deletedPairs: pairs.length, deletedPhotos };
+  }
+
+  /**
+   * Отримати пари конкретної колекції
+   */
+  async getPairsByCollection(albumId: number, collectionId: number) {
+    return this.prisma.beforeAfterPair.findMany({
+      where: { albumId, collectionId },
+      include: {
+        beforePhoto: true,
+        afterPhoto: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+  }
+
+  /**
+   * Замінити фото "До" в парі
+   */
+  async replaceBeforePhoto(pairId: number, newPhotoId: number): Promise<any> {
+    const pair = await this.prisma.beforeAfterPair.findUnique({
+      where: { id: pairId },
+      include: { beforePhoto: true },
+    });
+
+    if (!pair) {
+      throw new Error("Pair not found");
+    }
+
+    // Оновити пару з новим фото
+    const updatedPair = await this.prisma.beforeAfterPair.update({
+      where: { id: pairId },
+      data: { beforePhotoId: newPhotoId },
+      include: { beforePhoto: true, afterPhoto: true },
+    });
+
+    return updatedPair;
+  }
+
+  /**
+   * Замінити фото "Після" в парі
+   */
+  async replaceAfterPhoto(pairId: number, newPhotoId: number): Promise<any> {
+    const pair = await this.prisma.beforeAfterPair.findUnique({
+      where: { id: pairId },
+      include: { afterPhoto: true },
+    });
+
+    if (!pair) {
+      throw new Error("Pair not found");
+    }
+
+    // Оновити пару з новим фото
+    const updatedPair = await this.prisma.beforeAfterPair.update({
+      where: { id: pairId },
+      data: { afterPhotoId: newPhotoId },
+      include: { beforePhoto: true, afterPhoto: true },
+    });
+
+    return updatedPair;
+  }
 }
