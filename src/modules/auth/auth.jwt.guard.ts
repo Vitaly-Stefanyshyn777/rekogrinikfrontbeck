@@ -5,23 +5,19 @@ import {
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import { Reflector } from "@nestjs/core";
-import { Observable } from "rxjs";
 import { User } from "@prisma/client";
-// import { User } from "../user/user.entity";
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard("jwt") {
   roles: string[];
 
   constructor(private reflector: Reflector) {
-    super(reflector);
+    super();
   }
 
-  canActivate(
-    context: ExecutionContext
-  ): boolean | Promise<boolean> | Observable<boolean> {
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> {
     this.roles = this.reflector.get<string[]>("roles", context.getHandler());
-    return super.canActivate(context);
+    return super.canActivate(context) as boolean | Promise<boolean>;
   }
 
   handleRequest(err: Error, user: User): any {

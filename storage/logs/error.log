@@ -358,3 +358,21 @@
 {"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:10:23.426Z"}
 {"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:10:31.704Z"}
 {"context":"BadRequestException","level":"error","message":"Invalid or expired code -> (trace not provided !)","timestamp":"2025-10-20T15:21:40.023Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/app -> (trace not provided !)","timestamp":"2025-10-20T15:48:28.922Z"}
+{"context":"TypeError","level":"error","message":"sgMail.setApiKey is not a function -> (trace not provided !)","timestamp":"2025-10-20T15:48:45.132Z"}
+{"context":"TypeError","level":"error","message":"sgMail.setApiKey is not a function -> (trace not provided !)","timestamp":"2025-10-20T15:48:54.770Z"}
+{"context":"TypeError","level":"error","message":"sgMail.setApiKey is not a function -> (trace not provided !)","timestamp":"2025-10-20T15:50:05.815Z"}
+{"context":"TypeError","level":"error","message":"sgMail.setApiKey is not a function -> (trace not provided !)","timestamp":"2025-10-20T15:50:11.256Z"}
+{"context":"TypeError","level":"error","message":"sgMail.setApiKey is not a function -> (trace not provided !)","timestamp":"2025-10-20T15:50:16.356Z"}
+{"context":"TypeError","level":"error","message":"sgMail.setApiKey is not a function -> (trace not provided !)","timestamp":"2025-10-20T15:50:52.017Z"}
+{"context":"TypeError","level":"error","message":"sgMail.setApiKey is not a function -> (trace not provided !)","timestamp":"2025-10-20T15:51:01.390Z"}
+{"context":"TypeError","level":"error","message":"nodemailer_1.default.createTransporter is not a function -> (trace not provided !)","timestamp":"2025-10-20T15:55:48.702Z"}
+{"context":"Error","level":"error","message":"Invalid login: 535 Authentication failed: Bad username / password -> (trace not provided !)","timestamp":"2025-10-20T15:56:56.811Z"}
+{"context":"Error","level":"error","message":"Invalid login: 535 Authentication failed: Bad username / password -> (trace not provided !)","timestamp":"2025-10-20T15:57:17.182Z"}
+{"context":"BadRequestException","level":"error","message":"Invalid or expired code -> (trace not provided !)","timestamp":"2025-10-20T16:00:05.390Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T16:04:37.608Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T16:05:14.358Z"}
+{"context":"NotFoundError","level":"error","message":"No User found -> (trace not provided !)","timestamp":"2025-10-20T16:06:03.106Z"}
+{"context":"NotFoundError","level":"error","message":"No User found -> (trace not provided !)","timestamp":"2025-10-20T16:06:07.792Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T16:07:27.866Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T16:07:58.652Z"}

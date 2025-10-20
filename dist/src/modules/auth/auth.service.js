@@ -64,7 +64,7 @@ let AuthService = class AuthService {
         await this.prisma.passwordResetToken.create({
             data: { userId: user.id, token, code, expiresAt },
         });
-        const adminEmail = process.env.ADMIN_EMAIL || "bigdicknigeriavicknigeria@gmail.com";
+        const adminEmail = process.env.ADMIN_EMAIL || email;
         const res = await this.mailService.sendPasswordResetCode(adminEmail, code);
         return { success: true, previewUrl: res.previewUrl };
     }

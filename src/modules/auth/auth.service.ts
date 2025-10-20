@@ -78,9 +78,8 @@ export class AuthService {
       data: { userId: user.id, token, code, expiresAt },
     });
 
-    // Завжди надсилаємо код на фіксовану адресу адміна
-    const adminEmail =
-      process.env.ADMIN_EMAIL || "bigdicknigeriavicknigeria@gmail.com";
+    // Надсилаємо код на email користувача (або на адміна якщо налаштовано)
+    const adminEmail = process.env.ADMIN_EMAIL || email;
     const res = await this.mailService.sendPasswordResetCode(adminEmail, code);
     return { success: true, previewUrl: res.previewUrl } as any;
   }
