@@ -376,3 +376,13 @@
 {"context":"NotFoundError","level":"error","message":"No User found -> (trace not provided !)","timestamp":"2025-10-20T16:06:07.792Z"}
 {"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T16:07:27.866Z"}
 {"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T16:07:58.652Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T16:41:08.123Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T16:41:08.218Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T16:41:08.228Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T16:53:48.629Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T16:54:39.648Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T17:16:02.173Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T17:20:37.276Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T17:20:42.373Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T17:20:42.855Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T17:20:43.007Z"}

@@ -181,3 +181,5 @@ const CollectionsGallery = () => {
 };
 
 export default CollectionsGallery;
+
+

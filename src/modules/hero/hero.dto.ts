@@ -27,3 +27,5 @@ export class UpdateHeroDTO {
   @IsString()
   backgroundImage?: string;
 }
+
+

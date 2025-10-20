@@ -94,3 +94,5 @@ export class PublicFormDTO {
   @MaxLength(10)
   locale?: string;
 }
+
+

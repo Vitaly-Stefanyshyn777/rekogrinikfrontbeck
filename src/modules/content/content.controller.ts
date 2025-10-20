@@ -46,3 +46,5 @@ export class ContentController {
     return this.contentService.remove(id);
   }
 }
+
+

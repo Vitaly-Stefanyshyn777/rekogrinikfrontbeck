@@ -46,3 +46,5 @@ export class UpdateContentBlockDTO {
   @IsUrl()
   imageUrl?: string;
 }
+
+
