@@ -1,6 +1,5 @@
 import { Body, Controller, Post, Response } from "@nestjs/common";
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
-import { User } from "@prisma/client";
 
 import { JWT_EXPIRY_SECONDS } from "../../shared/constants/global.constants";
 
@@ -11,6 +10,7 @@ import {
   RegisterUserDTO,
   RequestPasswordResetDTO,
   ResetPasswordDTO,
+  ResetPasswordWithCodeDTO,
 } from "./auth.dto";
 
 @ApiTags("auth")
@@ -39,7 +39,7 @@ export class AuthController {
   }
 
   @Post("register")
-  async register(@Body() user: RegisterUserDTO): Promise<User> {
+  async register(@Body() user: RegisterUserDTO): Promise<any> {
     return this.authService.register(user);
   }
 
@@ -57,5 +57,14 @@ export class AuthController {
   @Post("reset-password")
   async resetPassword(@Body() dto: ResetPasswordDTO) {
     return this.authService.resetPassword(dto.token, dto.newPassword);
+  }
+
+  @Post("reset-password-code")
+  async resetPasswordWithCode(@Body() dto: ResetPasswordWithCodeDTO) {
+    return this.authService.resetPasswordWithCode(
+      dto.email,
+      dto.code,
+      dto.newPassword
+    );
   }
 }

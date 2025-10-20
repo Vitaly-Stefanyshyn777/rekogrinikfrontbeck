@@ -15,7 +15,16 @@ export declare class LoginUserDTO {
 export declare class RequestPasswordResetDTO {
     email: string;
 }
+export declare class RequestPasswordResetCodeDTO {
+    email: string;
+    sendToEmail: string;
+}
 export declare class ResetPasswordDTO {
     token: string;
+    newPassword: string;
+}
+export declare class ResetPasswordWithCodeDTO {
+    email: string;
+    code: string;
     newPassword: string;
 }

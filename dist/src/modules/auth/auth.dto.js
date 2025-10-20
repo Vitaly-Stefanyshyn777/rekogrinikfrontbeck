@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResetPasswordDTO = exports.RequestPasswordResetDTO = exports.LoginUserDTO = exports.RegisterUserDTO = exports.AuthResponseDTO = void 0;
+exports.ResetPasswordWithCodeDTO = exports.ResetPasswordDTO = exports.RequestPasswordResetCodeDTO = exports.RequestPasswordResetDTO = exports.LoginUserDTO = exports.RegisterUserDTO = exports.AuthResponseDTO = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 const strings_1 = require("../../shared/constants/strings");
@@ -60,6 +60,23 @@ __decorate([
     __metadata("design:type", String)
 ], RequestPasswordResetDTO.prototype, "email", void 0);
 exports.RequestPasswordResetDTO = RequestPasswordResetDTO;
+class RequestPasswordResetCodeDTO {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsEmail)({}, { message: strings_1.INVALID_EMAIL }),
+    __metadata("design:type", String)
+], RequestPasswordResetCodeDTO.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsEmail)({}, { message: strings_1.INVALID_EMAIL }),
+    __metadata("design:type", String)
+], RequestPasswordResetCodeDTO.prototype, "sendToEmail", void 0);
+exports.RequestPasswordResetCodeDTO = RequestPasswordResetCodeDTO;
 class ResetPasswordDTO {
 }
 __decorate([
@@ -75,4 +92,25 @@ __decorate([
     __metadata("design:type", String)
 ], ResetPasswordDTO.prototype, "newPassword", void 0);
 exports.ResetPasswordDTO = ResetPasswordDTO;
+class ResetPasswordWithCodeDTO {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], ResetPasswordWithCodeDTO.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], ResetPasswordWithCodeDTO.prototype, "code", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, swagger_1.ApiProperty)(),
+    __metadata("design:type", String)
+], ResetPasswordWithCodeDTO.prototype, "newPassword", void 0);
+exports.ResetPasswordWithCodeDTO = ResetPasswordWithCodeDTO;
 //# sourceMappingURL=auth.dto.js.map

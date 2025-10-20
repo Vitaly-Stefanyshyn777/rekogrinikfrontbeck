@@ -19,6 +19,7 @@ exports.GLOBAL_CONFIG = {
     security: {
         expiresIn: 3600 * 24,
         bcryptSaltOrRound: 10,
+        jwtSecret: process.env.JWT_SECRET || "fallback-jwt-secret-key",
     },
 };
 //# sourceMappingURL=global.config.js.map

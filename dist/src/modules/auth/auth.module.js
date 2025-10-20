@@ -9,25 +9,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const user_service_1 = require("../user/user.service");
-const global_constants_1 = require("../../shared/constants/global.constants");
+const global_config_1 = require("../../configs/global.config");
 const prisma_module_1 = require("../prisma/prisma.module");
-const prisma_service_1 = require("../prisma/prisma.service");
-const auth_jwt_strategy_1 = require("./auth.jwt.strategy");
+const user_module_1 = require("../user/user.module");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
+const mail_module_1 = require("../mail/mail.module");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            jwt_1.JwtModule.register({
-                secret: global_constants_1.JWT_SECRET,
-            }),
             prisma_module_1.PrismaModule,
+            user_module_1.UserModule,
+            mail_module_1.MailModule,
+            jwt_1.JwtModule.register({
+                secret: global_config_1.GLOBAL_CONFIG.security.jwtSecret,
+                signOptions: { expiresIn: global_config_1.GLOBAL_CONFIG.security.expiresIn },
+            }),
         ],
-        providers: [user_service_1.UserService, auth_service_1.AuthService, auth_jwt_strategy_1.JwtStrategy, prisma_service_1.PrismaService],
         controllers: [auth_controller_1.AuthController],
+        providers: [auth_service_1.AuthService],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

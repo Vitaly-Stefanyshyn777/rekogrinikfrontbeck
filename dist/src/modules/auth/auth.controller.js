@@ -45,6 +45,9 @@ let AuthController = class AuthController {
     async resetPassword(dto) {
         return this.authService.resetPassword(dto.token, dto.newPassword);
     }
+    async resetPasswordWithCode(dto) {
+        return this.authService.resetPasswordWithCode(dto.email, dto.code, dto.newPassword);
+    }
 };
 __decorate([
     (0, common_1.Post)("login"),
@@ -85,6 +88,13 @@ __decorate([
     __metadata("design:paramtypes", [auth_dto_1.ResetPasswordDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "resetPassword", null);
+__decorate([
+    (0, common_1.Post)("reset-password-code"),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [auth_dto_1.ResetPasswordWithCodeDTO]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "resetPasswordWithCode", null);
 AuthController = __decorate([
     (0, swagger_1.ApiTags)("auth"),
     (0, common_1.Controller)("auth"),

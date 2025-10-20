@@ -48,7 +48,11 @@ AppModule = __decorate([
                     limit: 10,
                 },
             ]),
-            config_1.ConfigModule.forRoot({ isGlobal: true, load: [() => global_config_1.GLOBAL_CONFIG] }),
+            config_1.ConfigModule.forRoot({
+                isGlobal: true,
+                load: [() => global_config_1.GLOBAL_CONFIG],
+                envFilePath: ".env",
+            }),
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

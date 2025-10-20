@@ -8,6 +8,7 @@ import { User } from "@prisma/client";
 import { randomBytes } from "crypto";
 
 import { UserService } from "../user/user.service";
+import { MailService } from "../mail/mail.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { AuthHelpers } from "../../shared/helpers/auth.helpers";
 import { GLOBAL_CONFIG } from "../../configs/global.config";
@@ -19,7 +20,8 @@ export class AuthService {
   constructor(
     private userService: UserService,
     private prisma: PrismaService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private mailService: MailService
   ) {}
 
   public async login(loginUserDTO: LoginUserDTO): Promise<AuthResponseDTO> {
@@ -70,12 +72,17 @@ export class AuthService {
       return { success: true };
     }
     const token = randomBytes(24).toString("hex");
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 1000 * 60 * 30); // 30 minutes
     await this.prisma.passwordResetToken.create({
-      data: { userId: user.id, token, expiresAt },
+      data: { userId: user.id, token, code, expiresAt },
     });
-    // Here you would send email with token link
-    return { success: true };
+
+    // Завжди надсилаємо код на фіксовану адресу адміна
+    const adminEmail =
+      process.env.ADMIN_EMAIL || "bigdicknigeriavicknigeria@gmail.com";
+    const res = await this.mailService.sendPasswordResetCode(adminEmail, code);
+    return { success: true, previewUrl: res.previewUrl } as any;
   }
 
   public async resetPassword(
@@ -88,10 +95,37 @@ export class AuthService {
     if (!record || record.used || record.expiresAt < new Date()) {
       throw new BadRequestException("Invalid or expired token");
     }
-    const hashed = (await AuthHelpers.hash(newPassword)) as string;
+    // Do not pre-hash here; Prisma middleware (UserListener) will hash once on update
     await this.prisma.user.update({
       where: { id: record.userId },
-      data: { password: hashed },
+      data: { password: newPassword },
+    });
+    await this.prisma.passwordResetToken.update({
+      where: { id: record.id },
+      data: { used: true },
+    });
+    return { success: true };
+  }
+
+  public async resetPasswordWithCode(
+    email: string,
+    code: string,
+    newPassword: string
+  ): Promise<{ success: boolean }> {
+    const user = await this.userService.findUser({ email });
+    if (!user) throw new BadRequestException("Invalid code");
+
+    const record = await this.prisma.passwordResetToken.findFirst({
+      where: { userId: user.id, used: false },
+      orderBy: { createdAt: "desc" },
+    });
+    if (!record || record.expiresAt < new Date() || record.code !== code) {
+      throw new BadRequestException("Invalid or expired code");
+    }
+
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { password: newPassword },
     });
     await this.prisma.passwordResetToken.update({
       where: { id: record.id },

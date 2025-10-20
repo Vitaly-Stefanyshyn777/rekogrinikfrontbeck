@@ -44,11 +44,42 @@ export class RequestPasswordResetDTO {
   email: string;
 }
 
+export class RequestPasswordResetCodeDTO {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  @IsEmail({}, { message: INVALID_EMAIL })
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  @IsEmail({}, { message: INVALID_EMAIL })
+  sendToEmail: string;
+}
+
 export class ResetPasswordDTO {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
   token: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  newPassword: string;
+}
+
+export class ResetPasswordWithCodeDTO {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  code: string;
 
   @IsString()
   @IsNotEmpty()

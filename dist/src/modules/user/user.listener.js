@@ -11,11 +11,13 @@ const common_1 = require("@nestjs/common");
 const auth_helpers_1 = require("../../shared/helpers/auth.helpers");
 let UserListener = class UserListener {
     static async onCreated(params, next) {
-        if (params.model == 'User') {
-            if (params.action === 'create' || params.action === 'update') {
-                const password = params.args['data'].password;
-                const encryptedPass = await auth_helpers_1.AuthHelpers.hash(password);
-                params.args['data'] = Object.assign(Object.assign({}, params.args['data']), { password: encryptedPass });
+        if (params.model == "User") {
+            if (params.action === "create" || params.action === "update") {
+                const password = params.args["data"].password;
+                if (password && !password.includes(":")) {
+                    const encryptedPass = await auth_helpers_1.AuthHelpers.hash(password);
+                    params.args["data"] = Object.assign(Object.assign({}, params.args["data"]), { password: encryptedPass });
+                }
             }
         }
         return next(params);

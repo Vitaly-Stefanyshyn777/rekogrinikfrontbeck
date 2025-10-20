@@ -19,5 +19,6 @@ export const GLOBAL_CONFIG: Config = {
   security: {
     expiresIn: 3600 * 24, // 24h
     bcryptSaltOrRound: 10,
+    jwtSecret: process.env.JWT_SECRET || "fallback-jwt-secret-key",
   },
 };

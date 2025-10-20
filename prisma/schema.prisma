@@ -93,6 +93,9 @@ model PasswordResetToken {
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
 
+  // Optional numeric code for email verification flow
+  code      String?
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

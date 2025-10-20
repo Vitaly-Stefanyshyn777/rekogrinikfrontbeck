@@ -315,3 +315,46 @@
 {"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/public/form -> (trace not provided !)","timestamp":"2025-10-20T12:09:01.622Z"}
 {"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/public/forms -> (trace not provided !)","timestamp":"2025-10-20T12:09:03.443Z"}
 {"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/public/form?limit=5 -> (trace not provided !)","timestamp":"2025-10-20T12:09:05.813Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T13:08:03.486Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T13:10:11.182Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T13:15:34.149Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T13:17:20.086Z"}
+{"context":"BadRequestException","level":"error","message":"Expected property name or '}' in JSON at position 1 (line 1 column 2) -> (trace not provided !)","timestamp":"2025-10-20T13:20:27.558Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T13:20:43.990Z"}
+{"context":"BadRequestException","level":"error","message":"Expected property name or '}' in JSON at position 1 (line 1 column 2) -> (trace not provided !)","timestamp":"2025-10-20T13:21:45.036Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:50:34.879Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:50:40.031Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:51:44.888Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:51:52.310Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/app -> (trace not provided !)","timestamp":"2025-10-20T14:51:55.683Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:52:02.366Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:52:05.751Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:52:47.628Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:52:52.844Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:53:10.577Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:54:14.787Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:54:19.570Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:55:46.073Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:55:52.339Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:56:06.247Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:56:09.779Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:56:19.093Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:56:51.107Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:56:56.400Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:57:02.501Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:59:24.168Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:59:32.766Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:59:52.583Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T14:59:58.297Z"}
+{"context":"BadRequestException","level":"error","message":"Invalid or expired code -> (trace not provided !)","timestamp":"2025-10-20T15:02:05.475Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:03:07.025Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:03:15.252Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:04:55.840Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:05:07.266Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:05:57.034Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:06:11.368Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:08:07.591Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:08:11.824Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:10:23.426Z"}
+{"context":"Error","level":"error","message":"secretOrPrivateKey must have a value -> (trace not provided !)","timestamp":"2025-10-20T15:10:31.704Z"}
+{"context":"BadRequestException","level":"error","message":"Invalid or expired code -> (trace not provided !)","timestamp":"2025-10-20T15:21:40.023Z"}

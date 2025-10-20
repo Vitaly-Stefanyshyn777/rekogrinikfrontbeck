@@ -36,7 +36,11 @@ import { HeroModule } from "../hero/hero.module";
         limit: 10, // 10 requests per minute
       },
     ]),
-    ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [() => GLOBAL_CONFIG],
+      envFilePath: ".env",
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
