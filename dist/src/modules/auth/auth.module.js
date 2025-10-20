@@ -14,6 +14,7 @@ const prisma_module_1 = require("../prisma/prisma.module");
 const user_module_1 = require("../user/user.module");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
+const auth_jwt_strategy_1 = require("./auth.jwt.strategy");
 const mail_module_1 = require("../mail/mail.module");
 let AuthModule = class AuthModule {
 };
@@ -29,7 +30,7 @@ AuthModule = __decorate([
             }),
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService],
+        providers: [auth_service_1.AuthService, auth_jwt_strategy_1.JwtStrategy],
     })
 ], AuthModule);
 exports.AuthModule = AuthModule;

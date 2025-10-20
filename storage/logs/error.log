@@ -386,3 +386,40 @@
 {"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T17:20:42.373Z"}
 {"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T17:20:42.855Z"}
 {"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-20T17:20:43.007Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T21:03:25.485Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T21:03:31.276Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T21:03:33.856Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-20T21:04:54.739Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:06:47.590Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:10:28.806Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:12:41.869Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot DELETE /api/v1/photos?id=146 -> (trace not provided !)","timestamp":"2025-10-20T21:16:14.828Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:16:26.520Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot DELETE /api/v1/photos?id=146 -> (trace not provided !)","timestamp":"2025-10-20T21:17:58.674Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:18:03.803Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot DELETE /api/v1/photos?id=145 -> (trace not provided !)","timestamp":"2025-10-20T21:23:45.348Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:23:54.078Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:24:41.978Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:25:35.029Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:28:10.410Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:28:53.480Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:28:58.481Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET / -> (trace not provided !)","timestamp":"2025-10-20T21:29:05.577Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:29:36.496Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:29:40.972Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:29:53.145Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot DELETE /api/v1/photos?id=146 -> (trace not provided !)","timestamp":"2025-10-20T21:31:00.023Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/gallery/photos -> (trace not provided !)","timestamp":"2025-10-20T21:31:06.907Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:33:45.072Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:35:01.562Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:37:34.358Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:37:46.920Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:40:19.170Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:40:25.267Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /api/v1/gallery/photos -> (trace not provided !)","timestamp":"2025-10-20T21:44:02.179Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET / -> (trace not provided !)","timestamp":"2025-10-20T21:46:47.192Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:47:06.394Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:47:12.781Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:59:48.238Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T22:00:04.212Z"}
+{"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T22:08:55.774Z"}
