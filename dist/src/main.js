@@ -30,7 +30,9 @@ async function bootstrap() {
                 origin === "https://rekogrinikadmin-production.up.railway.app" ||
                 origin.startsWith("https://rekogrinikadmin-production.up.railway.app") ||
                 origin === "https://rekogrinikfront-production.up.railway.app" ||
-                origin.startsWith("https://rekogrinikfront-production.up.railway.app")) {
+                origin.startsWith("https://rekogrinikfront-production.up.railway.app") ||
+                origin === "https://rekogrinikadmin-production-cf18.up.railway.app" ||
+                origin.startsWith("https://rekogrinikadmin-production-cf18.up.railway.app")) {
                 callback(null, true);
             }
             else {
