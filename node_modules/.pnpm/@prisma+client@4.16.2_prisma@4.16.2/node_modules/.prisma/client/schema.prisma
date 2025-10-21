@@ -81,8 +81,8 @@ model BeforeAfterPair {
   updatedAt     DateTime      @updatedAt
 
   album        Album         @relation(fields: [albumId], references: [id], onDelete: Cascade)
-  beforePhoto  GalleryPhoto  @relation("BeforePhoto", fields: [beforePhotoId], references: [id])
-  afterPhoto   GalleryPhoto  @relation("AfterPhoto", fields: [afterPhotoId], references: [id])
+  beforePhoto  GalleryPhoto  @relation("BeforePhoto", fields: [beforePhotoId], references: [id], onDelete: Cascade)
+  afterPhoto   GalleryPhoto  @relation("AfterPhoto", fields: [afterPhotoId], references: [id], onDelete: Cascade)
 }
 
 /// Token storage for password reset flow
