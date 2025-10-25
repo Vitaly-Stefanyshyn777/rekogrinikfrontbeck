@@ -32,7 +32,7 @@ export declare class PublicGalleryController {
             createdAt: Date;
             updatedAt: Date;
         }, unknown, never> & {})[];
-        pairs: ({
+        pairs: {
             beforePhoto: import("@prisma/client/runtime").GetResult<{
                 id: number;
                 albumId: number;
@@ -55,18 +55,17 @@ export declare class PublicGalleryController {
                 createdAt: Date;
                 updatedAt: Date;
             }, unknown, never> & {};
-        } & import("@prisma/client/runtime").GetResult<{
-            id: number;
+            createdAt: Date;
+            updatedAt: Date;
             albumId: number;
             beforePhotoId: number;
             afterPhotoId: number;
             label: string;
             collectionId: number;
-            createdAt: Date;
-            updatedAt: Date;
-        }, unknown, never> & {})[];
+            key: number;
+        }[];
         collections: {
-            id: number;
+            key: number;
             pairs: any;
             count: any;
         }[];

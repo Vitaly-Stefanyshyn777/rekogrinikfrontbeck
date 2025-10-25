@@ -109,7 +109,7 @@ let GalleryService = class GalleryService {
         await this.ensureAlbum(albumId);
         await this.pairsService.createPairsAutomatically(albumId);
     }
-    async deleteCollection(albumId, collectionId, deletePhotos = false) {
+    async deleteCollection(albumId, collectionId, deletePhotos = true) {
         await this.ensureAlbum(albumId);
         return this.pairsService.deleteCollection(albumId, collectionId, deletePhotos);
     }

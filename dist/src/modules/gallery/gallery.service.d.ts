@@ -59,7 +59,7 @@ export declare class GalleryService {
         createdAt: Date;
         updatedAt: Date;
     }, unknown, never> & {})[]>;
-    getPairs(albumId: number): Promise<({
+    getPairs(albumId: number): Promise<{
         beforePhoto: import("@prisma/client/runtime").GetResult<{
             id: number;
             albumId: number;
@@ -82,14 +82,13 @@ export declare class GalleryService {
             createdAt: Date;
             updatedAt: Date;
         }, unknown, never> & {};
-    } & import("@prisma/client/runtime").GetResult<{
-        id: number;
+        createdAt: Date;
+        updatedAt: Date;
         albumId: number;
         beforePhotoId: number;
         afterPhotoId: number;
         label: string;
         collectionId: number;
-        createdAt: Date;
-        updatedAt: Date;
-    }, unknown, never> & {})[]>;
+        key: number;
+    }[]>;
 }

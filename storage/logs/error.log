@@ -423,3 +423,14 @@
 {"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T21:59:48.238Z"}
 {"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T22:00:04.212Z"}
 {"context":"Error","level":"error","message":"Unknown authentication strategy \"jwt\" -> (trace not provided !)","timestamp":"2025-10-20T22:08:55.774Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-21T05:54:39.451Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-21T05:54:39.502Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-21T05:54:39.537Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-21T05:54:59.577Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-21T05:54:59.710Z"}
+{"context":"Error","level":"error","message":"Not allowed by CORS -> (trace not provided !)","timestamp":"2025-10-21T05:54:59.719Z"}
+{"context":"BadRequestException","level":"error","message":"Only image files allowed -> (trace not provided !)","timestamp":"2025-10-21T08:01:40.635Z"}
+{"context":"UnauthorizedException","level":"error","message":"Unauthorized -> (trace not provided !)","timestamp":"2025-10-25T07:13:40.791Z"}
+{"context":"BadRequestException","level":"error","message":"Upload failed: Empty file -> (trace not provided !)","timestamp":"2025-10-25T07:14:44.309Z"}
+{"context":"BadRequestException","level":"error","message":"Upload failed: Invalid image file -> (trace not provided !)","timestamp":"2025-10-25T07:14:54.512Z"}
+{"context":"BadRequestException","level":"error","message":"Validation failed (numeric string is expected) -> (trace not provided !)","timestamp":"2025-10-25T08:06:21.621Z"}

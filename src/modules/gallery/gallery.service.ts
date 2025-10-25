@@ -146,7 +146,7 @@ export class GalleryService {
   public async deleteCollection(
     albumId: number,
     collectionId: number,
-    deletePhotos: boolean = false
+    deletePhotos: boolean = true
   ): Promise<{ deletedPairs: number; deletedPhotos: number }> {
     await this.ensureAlbum(albumId);
     return this.pairsService.deleteCollection(

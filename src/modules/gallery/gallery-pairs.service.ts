@@ -30,9 +30,15 @@ export class GalleryPairsService {
       return;
     }
 
-    // Видалити існуючі пари для цього альбому
-    await this.prisma.beforeAfterPair.deleteMany({
+    // НЕ видаляти існуючі пари - додавати нові
+    // await this.prisma.beforeAfterPair.deleteMany({
+    //   where: { albumId },
+    // });
+
+    // Отримати існуючі пари, щоб не створювати дублікати
+    const existingPairs = await this.prisma.beforeAfterPair.findMany({
       where: { albumId },
+      select: { beforePhotoId: true, afterPhotoId: true, collectionId: true },
     });
 
     // Створити колекції по 3+3 фото
@@ -52,13 +58,23 @@ export class GalleryPairsService {
         const afterPhoto = afterPhotos[startAfter + i];
 
         if (beforePhoto && afterPhoto) {
-          collectionsToCreate.push({
-            albumId,
-            beforePhotoId: beforePhoto.id,
-            afterPhotoId: afterPhoto.id,
-            label: `Колекція ${collectionId} - Пара ${i + 1}`,
-            collectionId: collectionId,
-          });
+          // Перевірити чи пара вже існує
+          const pairExists = existingPairs.some(
+            (pair) =>
+              pair.beforePhotoId === beforePhoto.id &&
+              pair.afterPhotoId === afterPhoto.id &&
+              pair.collectionId === collectionId
+          );
+
+          if (!pairExists) {
+            collectionsToCreate.push({
+              albumId,
+              beforePhotoId: beforePhoto.id,
+              afterPhotoId: afterPhoto.id,
+              label: `Колекція ${collectionId} - Пара ${i + 1}`,
+              collectionId: collectionId,
+            });
+          }
         }
       }
     }
@@ -78,13 +94,19 @@ export class GalleryPairsService {
    * Отримати пари з повною інформацією про фото
    */
   async getPairsWithPhotos(albumId: number) {
-    return this.prisma.beforeAfterPair.findMany({
+    const pairs = await this.prisma.beforeAfterPair.findMany({
       where: { albumId },
       include: {
         beforePhoto: true,
         afterPhoto: true,
       },
       orderBy: { createdAt: "asc" },
+    });
+
+    // Трансформувати id в key для фронтенду
+    return pairs.map((pair) => {
+      const { id, ...rest } = pair;
+      return { key: id, ...rest };
     });
   }
 
@@ -106,7 +128,7 @@ export class GalleryPairsService {
 
     // Конвертувати в масив колекцій
     return Object.keys(collections).map((collectionId) => ({
-      id: parseInt(collectionId),
+      key: parseInt(collectionId),
       pairs: collections[collectionId],
       count: collections[collectionId].length,
     }));
@@ -133,7 +155,7 @@ export class GalleryPairsService {
   async deleteCollection(
     albumId: number,
     collectionId: number,
-    deletePhotos: boolean = false
+    deletePhotos: boolean = true
   ): Promise<{ deletedPairs: number; deletedPhotos: number }> {
     // Знайти всі пари цієї колекції
     const pairs = await this.prisma.beforeAfterPair.findMany({

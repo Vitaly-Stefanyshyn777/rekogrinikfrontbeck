@@ -3,7 +3,7 @@ export declare class GalleryPairsService {
     private prisma;
     constructor(prisma: PrismaService);
     createPairsAutomatically(albumId: number): Promise<void>;
-    getPairsWithPhotos(albumId: number): Promise<({
+    getPairsWithPhotos(albumId: number): Promise<{
         beforePhoto: import("@prisma/client/runtime").GetResult<{
             id: number;
             albumId: number;
@@ -26,18 +26,17 @@ export declare class GalleryPairsService {
             createdAt: Date;
             updatedAt: Date;
         }, unknown, never> & {};
-    } & import("@prisma/client/runtime").GetResult<{
-        id: number;
+        createdAt: Date;
+        updatedAt: Date;
         albumId: number;
         beforePhotoId: number;
         afterPhotoId: number;
         label: string;
         collectionId: number;
-        createdAt: Date;
-        updatedAt: Date;
-    }, unknown, never> & {})[]>;
+        key: number;
+    }[]>;
     getCollections(albumId: number): Promise<{
-        id: number;
+        key: number;
         pairs: any;
         count: any;
     }[]>;

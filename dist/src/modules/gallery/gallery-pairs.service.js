@@ -8,6 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GalleryPairsService = void 0;
 const common_1 = require("@nestjs/common");
@@ -28,8 +39,9 @@ let GalleryPairsService = class GalleryPairsService {
             console.log("Not enough photos to create pairs (need 3+3)");
             return;
         }
-        await this.prisma.beforeAfterPair.deleteMany({
+        const existingPairs = await this.prisma.beforeAfterPair.findMany({
             where: { albumId },
+            select: { beforePhotoId: true, afterPhotoId: true, collectionId: true },
         });
         const collectionsToCreate = [];
         const maxCollections = Math.min(Math.floor(beforePhotos.length / 3), Math.floor(afterPhotos.length / 3));
@@ -40,13 +52,18 @@ let GalleryPairsService = class GalleryPairsService {
                 const beforePhoto = beforePhotos[startBefore + i];
                 const afterPhoto = afterPhotos[startAfter + i];
                 if (beforePhoto && afterPhoto) {
-                    collectionsToCreate.push({
-                        albumId,
-                        beforePhotoId: beforePhoto.id,
-                        afterPhotoId: afterPhoto.id,
-                        label: `Колекція ${collectionId} - Пара ${i + 1}`,
-                        collectionId: collectionId,
-                    });
+                    const pairExists = existingPairs.some((pair) => pair.beforePhotoId === beforePhoto.id &&
+                        pair.afterPhotoId === afterPhoto.id &&
+                        pair.collectionId === collectionId);
+                    if (!pairExists) {
+                        collectionsToCreate.push({
+                            albumId,
+                            beforePhotoId: beforePhoto.id,
+                            afterPhotoId: afterPhoto.id,
+                            label: `Колекція ${collectionId} - Пара ${i + 1}`,
+                            collectionId: collectionId,
+                        });
+                    }
                 }
             }
         }
@@ -58,13 +75,17 @@ let GalleryPairsService = class GalleryPairsService {
         }
     }
     async getPairsWithPhotos(albumId) {
-        return this.prisma.beforeAfterPair.findMany({
+        const pairs = await this.prisma.beforeAfterPair.findMany({
             where: { albumId },
             include: {
                 beforePhoto: true,
                 afterPhoto: true,
             },
             orderBy: { createdAt: "asc" },
+        });
+        return pairs.map((pair) => {
+            const { id } = pair, rest = __rest(pair, ["id"]);
+            return Object.assign({ key: id }, rest);
         });
     }
     async getCollections(albumId) {
@@ -78,7 +99,7 @@ let GalleryPairsService = class GalleryPairsService {
             collections[collectionId].push(pair);
         });
         return Object.keys(collections).map((collectionId) => ({
-            id: parseInt(collectionId),
+            key: parseInt(collectionId),
             pairs: collections[collectionId],
             count: collections[collectionId].length,
         }));
@@ -91,7 +112,7 @@ let GalleryPairsService = class GalleryPairsService {
         const afterCount = photos.filter((photo) => photo.tag === "after").length;
         return beforeCount >= 3 && afterCount >= 3;
     }
-    async deleteCollection(albumId, collectionId, deletePhotos = false) {
+    async deleteCollection(albumId, collectionId, deletePhotos = true) {
         const pairs = await this.prisma.beforeAfterPair.findMany({
             where: { albumId, collectionId },
             include: { beforePhoto: true, afterPhoto: true },

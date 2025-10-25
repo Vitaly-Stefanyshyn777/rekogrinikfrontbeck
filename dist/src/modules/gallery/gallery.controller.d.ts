@@ -134,5 +134,36 @@ export declare class GalleryController {
         collectionId: number;
         createdAt: Date;
         updatedAt: Date;
-    }, unknown, never> & {})[]>;
+    }, unknown, never> & {})[]> | Promise<{
+        beforePhoto: import("@prisma/client/runtime").GetResult<{
+            id: number;
+            albumId: number;
+            url: string;
+            publicId: string;
+            title: string;
+            description: string;
+            tag: string;
+            createdAt: Date;
+            updatedAt: Date;
+        }, unknown, never> & {};
+        afterPhoto: import("@prisma/client/runtime").GetResult<{
+            id: number;
+            albumId: number;
+            url: string;
+            publicId: string;
+            title: string;
+            description: string;
+            tag: string;
+            createdAt: Date;
+            updatedAt: Date;
+        }, unknown, never> & {};
+        createdAt: Date;
+        updatedAt: Date;
+        albumId: number;
+        beforePhotoId: number;
+        afterPhotoId: number;
+        label: string;
+        collectionId: number;
+        key: number;
+    }[]>;
 }
