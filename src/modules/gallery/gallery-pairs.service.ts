@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
+import { v2 as cloudinary } from "cloudinary";
 
 @Injectable()
 export class GalleryPairsService {
@@ -221,6 +222,9 @@ export class GalleryPairsService {
       }
     }
 
+    // Очистити сиротливі фото після видалення колекції
+    await this.cleanupOrphanedPhotos(albumId);
+
     return { deletedPairs: pairs.length, deletedPhotos };
   }
 
@@ -282,5 +286,72 @@ export class GalleryPairsService {
     });
 
     return updatedPair;
+  }
+
+  /**
+   * Очистити фото, які не входять в жодну пару (сиротливі фото)
+   */
+  async cleanupOrphanedPhotos(albumId: number): Promise<number> {
+    // Отримати всі фото з альбому
+    const allPhotos = await this.prisma.galleryPhoto.findMany({
+      where: { albumId },
+    });
+
+    // Отримати всі пари альбому
+    const allPairs = await this.prisma.beforeAfterPair.findMany({
+      where: { albumId },
+      select: { beforePhotoId: true, afterPhotoId: true },
+    });
+
+    // Зібрати ID всіх фото, які використовуються в парах
+    const usedPhotoIds = new Set<number>();
+    allPairs.forEach((pair) => {
+      usedPhotoIds.add(pair.beforePhotoId);
+      usedPhotoIds.add(pair.afterPhotoId);
+    });
+
+    // Знайти фото, які не використовуються
+    const orphanedPhotos = allPhotos.filter(
+      (photo) => !usedPhotoIds.has(photo.id)
+    );
+
+    // Видалити сиротливі фото
+    let deletedCount = 0;
+    for (const photo of orphanedPhotos) {
+      try {
+        // Видалити з Cloudinary (якщо є publicId)
+        if (photo.publicId) {
+          try {
+            await cloudinary.uploader.destroy(photo.publicId);
+            console.log(`🗑️ Видалено з Cloudinary: ${photo.publicId}`);
+          } catch (cloudinaryError) {
+            console.error(
+              `Помилка видалення з Cloudinary ${photo.publicId}:`,
+              cloudinaryError
+            );
+          }
+        }
+
+        // Видалити з БД
+        await this.prisma.galleryPhoto.delete({
+          where: { id: photo.id },
+        });
+
+        deletedCount++;
+        console.log(
+          `✅ Видалено сиротливе фото (ID: ${photo.id}, tag: ${photo.tag})`
+        );
+      } catch (error) {
+        console.error(`Помилка видалення фото ${photo.id}:`, error);
+      }
+    }
+
+    if (deletedCount > 0) {
+      console.log(
+        `🧹 Очищено ${deletedCount} сиротливих фото з альбому ${albumId}`
+      );
+    }
+
+    return deletedCount;
   }
 }

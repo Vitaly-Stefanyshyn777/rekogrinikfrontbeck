@@ -23,6 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GalleryPairsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const cloudinary_1 = require("cloudinary");
 let GalleryPairsService = class GalleryPairsService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -157,6 +158,7 @@ let GalleryPairsService = class GalleryPairsService {
                 }
             }
         }
+        await this.cleanupOrphanedPhotos(albumId);
         return { deletedPairs: pairs.length, deletedPhotos };
     }
     async getPairsByCollection(albumId, collectionId) {
@@ -198,6 +200,47 @@ let GalleryPairsService = class GalleryPairsService {
             include: { beforePhoto: true, afterPhoto: true },
         });
         return updatedPair;
+    }
+    async cleanupOrphanedPhotos(albumId) {
+        const allPhotos = await this.prisma.galleryPhoto.findMany({
+            where: { albumId },
+        });
+        const allPairs = await this.prisma.beforeAfterPair.findMany({
+            where: { albumId },
+            select: { beforePhotoId: true, afterPhotoId: true },
+        });
+        const usedPhotoIds = new Set();
+        allPairs.forEach((pair) => {
+            usedPhotoIds.add(pair.beforePhotoId);
+            usedPhotoIds.add(pair.afterPhotoId);
+        });
+        const orphanedPhotos = allPhotos.filter((photo) => !usedPhotoIds.has(photo.id));
+        let deletedCount = 0;
+        for (const photo of orphanedPhotos) {
+            try {
+                if (photo.publicId) {
+                    try {
+                        await cloudinary_1.v2.uploader.destroy(photo.publicId);
+                        console.log(`🗑️ Видалено з Cloudinary: ${photo.publicId}`);
+                    }
+                    catch (cloudinaryError) {
+                        console.error(`Помилка видалення з Cloudinary ${photo.publicId}:`, cloudinaryError);
+                    }
+                }
+                await this.prisma.galleryPhoto.delete({
+                    where: { id: photo.id },
+                });
+                deletedCount++;
+                console.log(`✅ Видалено сиротливе фото (ID: ${photo.id}, tag: ${photo.tag})`);
+            }
+            catch (error) {
+                console.error(`Помилка видалення фото ${photo.id}:`, error);
+            }
+        }
+        if (deletedCount > 0) {
+            console.log(`🧹 Очищено ${deletedCount} сиротливих фото з альбому ${albumId}`);
+        }
+        return deletedCount;
     }
 };
 GalleryPairsService = __decorate([

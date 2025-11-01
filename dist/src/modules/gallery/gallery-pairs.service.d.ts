@@ -80,4 +80,5 @@ export declare class GalleryPairsService {
     }, unknown, never> & {})[]>;
     replaceBeforePhoto(pairId: number, newPhotoId: number): Promise<any>;
     replaceAfterPhoto(pairId: number, newPhotoId: number): Promise<any>;
+    cleanupOrphanedPhotos(albumId: number): Promise<number>;
 }

@@ -207,29 +207,40 @@ export class UploadController {
         newPhoto.id
       );
 
-      // 5. Видалити старе фото якщо потрібно
-      if (body.deleteOld === "true" && pair.beforePhoto) {
+      // 5. Автоматично видалити старе фото, якщо воно більше не використовується в інших парах
+      if (pair.beforePhoto) {
         const oldPhoto = pair.beforePhoto;
 
-        // Перевірити чи старе фото використовується в інших парах
+        // Перевірити чи старе фото використовується в інших парах (після оновлення поточної пари)
         const otherPairs = await (this.prisma as any).beforeAfterPair.findMany({
           where: {
             OR: [{ beforePhotoId: oldPhoto.id }, { afterPhotoId: oldPhoto.id }],
           },
         });
 
+        // Якщо фото не використовується в жодній парі - видалити
         if (otherPairs.length === 0) {
           // Видалити з Cloudinary
           if (oldPhoto.publicId) {
-            await this.uploadService.deleteImage(oldPhoto.publicId);
+            try {
+              await this.uploadService.deleteImage(oldPhoto.publicId);
+            } catch (error) {
+              console.error(`Failed to delete from Cloudinary: ${oldPhoto.publicId}`, error);
+            }
           }
 
           // Видалити з БД
           await (this.prisma as any).galleryPhoto.delete({
             where: { id: oldPhoto.id },
           });
+          console.log(`✅ Видалено старе фото "до" (ID: ${oldPhoto.id}) після заміни`);
+        } else {
+          console.log(`⚠️ Старе фото "до" (ID: ${oldPhoto.id}) все ще використовується в ${otherPairs.length} парах`);
         }
       }
+
+      // 6. Очистити сиротливі фото (які не входять в жодну пару)
+      await this.pairsService.cleanupOrphanedPhotos(pair.albumId);
 
       return {
         pairId: updatedPair.id,
@@ -303,29 +314,40 @@ export class UploadController {
         newPhoto.id
       );
 
-      // 5. Видалити старе фото якщо потрібно
-      if (body.deleteOld === "true" && pair.afterPhoto) {
+      // 5. Автоматично видалити старе фото, якщо воно більше не використовується в інших парах
+      if (pair.afterPhoto) {
         const oldPhoto = pair.afterPhoto;
 
-        // Перевірити чи старе фото використовується в інших парах
+        // Перевірити чи старе фото використовується в інших парах (після оновлення поточної пари)
         const otherPairs = await (this.prisma as any).beforeAfterPair.findMany({
           where: {
             OR: [{ beforePhotoId: oldPhoto.id }, { afterPhotoId: oldPhoto.id }],
           },
         });
 
+        // Якщо фото не використовується в жодній парі - видалити
         if (otherPairs.length === 0) {
           // Видалити з Cloudinary
           if (oldPhoto.publicId) {
-            await this.uploadService.deleteImage(oldPhoto.publicId);
+            try {
+              await this.uploadService.deleteImage(oldPhoto.publicId);
+            } catch (error) {
+              console.error(`Failed to delete from Cloudinary: ${oldPhoto.publicId}`, error);
+            }
           }
 
           // Видалити з БД
           await (this.prisma as any).galleryPhoto.delete({
             where: { id: oldPhoto.id },
           });
+          console.log(`✅ Видалено старе фото "після" (ID: ${oldPhoto.id}) після заміни`);
+        } else {
+          console.log(`⚠️ Старе фото "після" (ID: ${oldPhoto.id}) все ще використовується в ${otherPairs.length} парах`);
         }
       }
+
+      // 6. Очистити сиротливі фото (які не входять в жодну пару)
+      await this.pairsService.cleanupOrphanedPhotos(pair.albumId);
 
       return {
         pairId: updatedPair.id,

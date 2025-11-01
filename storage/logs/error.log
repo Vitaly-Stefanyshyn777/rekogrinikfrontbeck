@@ -434,3 +434,5 @@
 {"context":"BadRequestException","level":"error","message":"Upload failed: Empty file -> (trace not provided !)","timestamp":"2025-10-25T07:14:44.309Z"}
 {"context":"BadRequestException","level":"error","message":"Upload failed: Invalid image file -> (trace not provided !)","timestamp":"2025-10-25T07:14:54.512Z"}
 {"context":"BadRequestException","level":"error","message":"Validation failed (numeric string is expected) -> (trace not provided !)","timestamp":"2025-10-25T08:06:21.621Z"}
+{"context":"ThrottlerException","level":"error","message":"ThrottlerException: Too Many Requests -> (trace not provided !)","timestamp":"2025-10-31T23:16:13.105Z"}
+{"context":"ThrottlerException","level":"error","message":"ThrottlerException: Too Many Requests -> (trace not provided !)","timestamp":"2025-10-31T23:16:14.209Z"}

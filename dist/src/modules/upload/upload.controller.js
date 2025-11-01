@@ -112,7 +112,7 @@ let UploadController = class UploadController {
                 },
             });
             const updatedPair = await this.pairsService.replaceBeforePhoto(pairId, newPhoto.id);
-            if (body.deleteOld === "true" && pair.beforePhoto) {
+            if (pair.beforePhoto) {
                 const oldPhoto = pair.beforePhoto;
                 const otherPairs = await this.prisma.beforeAfterPair.findMany({
                     where: {
@@ -121,13 +121,23 @@ let UploadController = class UploadController {
                 });
                 if (otherPairs.length === 0) {
                     if (oldPhoto.publicId) {
-                        await this.uploadService.deleteImage(oldPhoto.publicId);
+                        try {
+                            await this.uploadService.deleteImage(oldPhoto.publicId);
+                        }
+                        catch (error) {
+                            console.error(`Failed to delete from Cloudinary: ${oldPhoto.publicId}`, error);
+                        }
                     }
                     await this.prisma.galleryPhoto.delete({
                         where: { id: oldPhoto.id },
                     });
+                    console.log(`✅ Видалено старе фото "до" (ID: ${oldPhoto.id}) після заміни`);
+                }
+                else {
+                    console.log(`⚠️ Старе фото "до" (ID: ${oldPhoto.id}) все ще використовується в ${otherPairs.length} парах`);
                 }
             }
+            await this.pairsService.cleanupOrphanedPhotos(pair.albumId);
             return {
                 pairId: updatedPair.id,
                 beforePhoto: {
@@ -167,7 +177,7 @@ let UploadController = class UploadController {
                 },
             });
             const updatedPair = await this.pairsService.replaceAfterPhoto(pairId, newPhoto.id);
-            if (body.deleteOld === "true" && pair.afterPhoto) {
+            if (pair.afterPhoto) {
                 const oldPhoto = pair.afterPhoto;
                 const otherPairs = await this.prisma.beforeAfterPair.findMany({
                     where: {
@@ -176,13 +186,23 @@ let UploadController = class UploadController {
                 });
                 if (otherPairs.length === 0) {
                     if (oldPhoto.publicId) {
-                        await this.uploadService.deleteImage(oldPhoto.publicId);
+                        try {
+                            await this.uploadService.deleteImage(oldPhoto.publicId);
+                        }
+                        catch (error) {
+                            console.error(`Failed to delete from Cloudinary: ${oldPhoto.publicId}`, error);
+                        }
                     }
                     await this.prisma.galleryPhoto.delete({
                         where: { id: oldPhoto.id },
                     });
+                    console.log(`✅ Видалено старе фото "після" (ID: ${oldPhoto.id}) після заміни`);
+                }
+                else {
+                    console.log(`⚠️ Старе фото "після" (ID: ${oldPhoto.id}) все ще використовується в ${otherPairs.length} парах`);
                 }
             }
+            await this.pairsService.cleanupOrphanedPhotos(pair.albumId);
             return {
                 pairId: updatedPair.id,
                 afterPhoto: {
