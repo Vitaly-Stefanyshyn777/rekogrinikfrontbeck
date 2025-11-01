@@ -42,39 +42,89 @@ export class GalleryPairsService {
       select: { beforePhotoId: true, afterPhotoId: true, collectionId: true },
     });
 
-    // Створити колекції по 3+3 фото
-    const collectionsToCreate = [];
-    const maxCollections = Math.min(
-      Math.floor(beforePhotos.length / 3),
-      Math.floor(afterPhotos.length / 3)
+    // Визначити які фото вже використовуються в парах
+    const usedBeforePhotoIds = new Set<number>();
+    const usedAfterPhotoIds = new Set<number>();
+    const existingCollectionIds = new Set<number>();
+    existingPairs.forEach((pair) => {
+      usedBeforePhotoIds.add(pair.beforePhotoId);
+      usedAfterPhotoIds.add(pair.afterPhotoId);
+      if (pair.collectionId) {
+        existingCollectionIds.add(pair.collectionId);
+      }
+    });
+
+    // Визначити початковий collectionId для нових колекцій (максимальний існуючий + 1)
+    const maxExistingCollectionId =
+      existingCollectionIds.size > 0
+        ? Math.max(...Array.from(existingCollectionIds))
+        : 0;
+    const startCollectionId = maxExistingCollectionId + 1;
+
+    // Фільтрувати фото - використовувати тільки ті, що НЕ використовуються в парах
+    const availableBeforePhotos = beforePhotos.filter(
+      (photo) => !usedBeforePhotoIds.has(photo.id)
+    );
+    const availableAfterPhotos = afterPhotos.filter(
+      (photo) => !usedAfterPhotoIds.has(photo.id)
     );
 
-    for (let collectionId = 1; collectionId <= maxCollections; collectionId++) {
-      const startBefore = (collectionId - 1) * 3;
-      const startAfter = (collectionId - 1) * 3;
+    console.log(
+      `📊 Available photos: ${availableBeforePhotos.length} "До" and ${availableAfterPhotos.length} "Після" (excluding ${usedBeforePhotoIds.size} used before and ${usedAfterPhotoIds.size} used after)`
+    );
+    console.log(
+      `📊 Used before photo IDs: [${Array.from(usedBeforePhotoIds)
+        .slice(0, 10)
+        .join(", ")}${usedBeforePhotoIds.size > 10 ? "..." : ""}]`
+    );
+    console.log(
+      `📊 Used after photo IDs: [${Array.from(usedAfterPhotoIds)
+        .slice(0, 10)
+        .join(", ")}${usedAfterPhotoIds.size > 10 ? "..." : ""}]`
+    );
+    console.log(
+      `📁 Existing collections: ${existingCollectionIds.size}, max collectionId: ${maxExistingCollectionId}, starting new collections from: ${startCollectionId}`
+    );
 
-      // Створити 3 пари для кожної колекції
-      for (let i = 0; i < 3; i++) {
-        const beforePhoto = beforePhotos[startBefore + i];
-        const afterPhoto = afterPhotos[startAfter + i];
+    // Створити колекції по 3+3 фото з доступних (невикористаних) фото
+    const collectionsToCreate = [];
+    const maxCollections = Math.min(
+      Math.floor(availableBeforePhotos.length / 3),
+      Math.floor(availableAfterPhotos.length / 3)
+    );
+
+    for (let i = 0; i < maxCollections; i++) {
+      const collectionId = startCollectionId + i;
+      const startBefore = i * 3;
+      const startAfter = i * 3;
+
+      // Створити 3 пари для кожної колекції з доступних фото
+      for (let j = 0; j < 3; j++) {
+        const beforePhoto = availableBeforePhotos[startBefore + j];
+        const afterPhoto = availableAfterPhotos[startAfter + j];
 
         if (beforePhoto && afterPhoto) {
-          // Перевірити чи пара вже існує
-          const pairExists = existingPairs.some(
-            (pair) =>
-              pair.beforePhotoId === beforePhoto.id &&
-              pair.afterPhotoId === afterPhoto.id &&
-              pair.collectionId === collectionId
-          );
+          // Перевірити чи фото вже використовуються в будь-яких парах (незалежно від collectionId)
+          const beforePhotoAlreadyUsed = usedBeforePhotoIds.has(beforePhoto.id);
+          const afterPhotoAlreadyUsed = usedAfterPhotoIds.has(afterPhoto.id);
 
-          if (!pairExists) {
+          if (!beforePhotoAlreadyUsed && !afterPhotoAlreadyUsed) {
+            // Фото не використовуються - можна створити пару
             collectionsToCreate.push({
               albumId,
               beforePhotoId: beforePhoto.id,
               afterPhotoId: afterPhoto.id,
-              label: `Колекція ${collectionId} - Пара ${i + 1}`,
+              label: `Колекція ${collectionId} - Пара ${j + 1}`,
               collectionId: collectionId,
             });
+
+            // Відразу додати в множину використаних, щоб уникнути дублікатів в одній ітерації
+            usedBeforePhotoIds.add(beforePhoto.id);
+            usedAfterPhotoIds.add(afterPhoto.id);
+          } else {
+            console.log(
+              `⚠️ Пропущено пару: beforePhoto ${beforePhoto.id} (used: ${beforePhotoAlreadyUsed}) або afterPhoto ${afterPhoto.id} (used: ${afterPhotoAlreadyUsed}) вже використовуються`
+            );
           }
         }
       }
@@ -86,7 +136,7 @@ export class GalleryPairsService {
       });
 
       console.log(
-        `Created ${collectionsToCreate.length} pairs in ${maxCollections} collections automatically`
+        `Created ${collectionsToCreate.length} pairs in ${maxCollections} new collection(s) (starting from collectionId ${startCollectionId}) automatically`
       );
     }
   }

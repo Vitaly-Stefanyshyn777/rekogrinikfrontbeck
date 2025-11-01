@@ -44,26 +44,55 @@ let GalleryPairsService = class GalleryPairsService {
             where: { albumId },
             select: { beforePhotoId: true, afterPhotoId: true, collectionId: true },
         });
+        const usedBeforePhotoIds = new Set();
+        const usedAfterPhotoIds = new Set();
+        const existingCollectionIds = new Set();
+        existingPairs.forEach((pair) => {
+            usedBeforePhotoIds.add(pair.beforePhotoId);
+            usedAfterPhotoIds.add(pair.afterPhotoId);
+            if (pair.collectionId) {
+                existingCollectionIds.add(pair.collectionId);
+            }
+        });
+        const maxExistingCollectionId = existingCollectionIds.size > 0
+            ? Math.max(...Array.from(existingCollectionIds))
+            : 0;
+        const startCollectionId = maxExistingCollectionId + 1;
+        const availableBeforePhotos = beforePhotos.filter((photo) => !usedBeforePhotoIds.has(photo.id));
+        const availableAfterPhotos = afterPhotos.filter((photo) => !usedAfterPhotoIds.has(photo.id));
+        console.log(`📊 Available photos: ${availableBeforePhotos.length} "До" and ${availableAfterPhotos.length} "Після" (excluding ${usedBeforePhotoIds.size} used before and ${usedAfterPhotoIds.size} used after)`);
+        console.log(`📊 Used before photo IDs: [${Array.from(usedBeforePhotoIds)
+            .slice(0, 10)
+            .join(", ")}${usedBeforePhotoIds.size > 10 ? "..." : ""}]`);
+        console.log(`📊 Used after photo IDs: [${Array.from(usedAfterPhotoIds)
+            .slice(0, 10)
+            .join(", ")}${usedAfterPhotoIds.size > 10 ? "..." : ""}]`);
+        console.log(`📁 Existing collections: ${existingCollectionIds.size}, max collectionId: ${maxExistingCollectionId}, starting new collections from: ${startCollectionId}`);
         const collectionsToCreate = [];
-        const maxCollections = Math.min(Math.floor(beforePhotos.length / 3), Math.floor(afterPhotos.length / 3));
-        for (let collectionId = 1; collectionId <= maxCollections; collectionId++) {
-            const startBefore = (collectionId - 1) * 3;
-            const startAfter = (collectionId - 1) * 3;
-            for (let i = 0; i < 3; i++) {
-                const beforePhoto = beforePhotos[startBefore + i];
-                const afterPhoto = afterPhotos[startAfter + i];
+        const maxCollections = Math.min(Math.floor(availableBeforePhotos.length / 3), Math.floor(availableAfterPhotos.length / 3));
+        for (let i = 0; i < maxCollections; i++) {
+            const collectionId = startCollectionId + i;
+            const startBefore = i * 3;
+            const startAfter = i * 3;
+            for (let j = 0; j < 3; j++) {
+                const beforePhoto = availableBeforePhotos[startBefore + j];
+                const afterPhoto = availableAfterPhotos[startAfter + j];
                 if (beforePhoto && afterPhoto) {
-                    const pairExists = existingPairs.some((pair) => pair.beforePhotoId === beforePhoto.id &&
-                        pair.afterPhotoId === afterPhoto.id &&
-                        pair.collectionId === collectionId);
-                    if (!pairExists) {
+                    const beforePhotoAlreadyUsed = usedBeforePhotoIds.has(beforePhoto.id);
+                    const afterPhotoAlreadyUsed = usedAfterPhotoIds.has(afterPhoto.id);
+                    if (!beforePhotoAlreadyUsed && !afterPhotoAlreadyUsed) {
                         collectionsToCreate.push({
                             albumId,
                             beforePhotoId: beforePhoto.id,
                             afterPhotoId: afterPhoto.id,
-                            label: `Колекція ${collectionId} - Пара ${i + 1}`,
+                            label: `Колекція ${collectionId} - Пара ${j + 1}`,
                             collectionId: collectionId,
                         });
+                        usedBeforePhotoIds.add(beforePhoto.id);
+                        usedAfterPhotoIds.add(afterPhoto.id);
+                    }
+                    else {
+                        console.log(`⚠️ Пропущено пару: beforePhoto ${beforePhoto.id} (used: ${beforePhotoAlreadyUsed}) або afterPhoto ${afterPhoto.id} (used: ${afterPhotoAlreadyUsed}) вже використовуються`);
                     }
                 }
             }
@@ -72,7 +101,7 @@ let GalleryPairsService = class GalleryPairsService {
             await this.prisma.beforeAfterPair.createMany({
                 data: collectionsToCreate,
             });
-            console.log(`Created ${collectionsToCreate.length} pairs in ${maxCollections} collections automatically`);
+            console.log(`Created ${collectionsToCreate.length} pairs in ${maxCollections} new collection(s) (starting from collectionId ${startCollectionId}) automatically`);
         }
     }
     async getPairsWithPhotos(albumId) {
