@@ -1,8 +1,10 @@
 import { PrismaService } from "../prisma/prisma.service";
 import { PublicFormDTO } from "./publicForm.dto";
+import { TelegramService } from "../telegram/telegram.service";
 export declare class PublicFormController {
     private prisma;
-    constructor(prisma: PrismaService);
+    private telegramService;
+    constructor(prisma: PrismaService, telegramService: TelegramService);
     submit(dto: PublicFormDTO, userAgent?: string, ip?: string): Promise<{
         id: number;
         createdAt: Date;

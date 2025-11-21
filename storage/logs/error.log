@@ -436,3 +436,55 @@
 {"context":"BadRequestException","level":"error","message":"Validation failed (numeric string is expected) -> (trace not provided !)","timestamp":"2025-10-25T08:06:21.621Z"}
 {"context":"ThrottlerException","level":"error","message":"ThrottlerException: Too Many Requests -> (trace not provided !)","timestamp":"2025-10-31T23:16:13.105Z"}
 {"context":"ThrottlerException","level":"error","message":"ThrottlerException: Too Many Requests -> (trace not provided !)","timestamp":"2025-10-31T23:16:14.209Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-20T22:26:09.919Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-20T22:26:09.929Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-20T22:26:09.933Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-20T22:28:45.493Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-20T22:28:45.773Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-20T22:28:45.781Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-20T22:31:06.055Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-20T22:31:09.971Z"}
+{"context":"PrismaClientKnownRequestError","level":"error","message":"\nInvalid `this.prisma.user.findUnique()` invocation in\n/Users/vitalikstefanisin/Documents/GitHub/rekogrinikfrontbeck/src/modules/user/user.service.ts:13:29\n\n  10 async findUser(\n  11   userWhereUniqueInput: Prisma.UserWhereUniqueInput,\n  12 ): Promise<User | null> {\n→ 13   return this.prisma.user.findUnique(\nCan't reach database server at `ep-winter-shadow-addxhbeb-pooler.c-2.us-east-1.aws.neon.tech`:`5432`\n\nPlease make sure your database server is running at `ep-winter-shadow-addxhbeb-pooler.c-2.us-east-1.aws.neon.tech`:`5432`. -> (trace not provided !)","timestamp":"2025-11-20T22:37:30.617Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-20T22:42:07.193Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-20T22:42:07.199Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-20T22:42:07.204Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-20T22:43:41.993Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-20T22:44:43.452Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-20T22:44:43.457Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-20T22:44:43.437Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-20T23:18:57.433Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-20T23:18:57.446Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-20T23:18:57.448Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-20T23:22:52.343Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-20T23:22:52.359Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-20T23:22:52.364Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-20T23:28:03.111Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-20T23:28:03.114Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-20T23:28:03.099Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-21T05:04:21.734Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-21T05:04:21.739Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:04:21.741Z"}
+{"context":"NotFoundError","level":"error","message":"No Album found -> (trace not provided !)","timestamp":"2025-11-21T05:08:39.483Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-21T05:10:51.281Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:11:12.116Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-21T05:12:59.837Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:12:59.849Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-21T05:12:59.851Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:14:41.218Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-21T05:16:22.447Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:16:22.449Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-21T05:16:22.437Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-21T05:23:24.778Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:23:24.785Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-21T05:23:24.788Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-21T05:24:24.801Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:24:31.376Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-21T05:27:57.170Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-21T05:27:57.195Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:27:57.200Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:36:46.377Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-21T05:36:46.387Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-21T05:36:46.395Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/general -> (trace not provided !)","timestamp":"2025-11-21T05:50:32.761Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/gallery/albums/before-after -> (trace not provided !)","timestamp":"2025-11-21T05:50:32.772Z"}
+{"context":"NotFoundException","level":"error","message":"Cannot GET /public/hero -> (trace not provided !)","timestamp":"2025-11-21T05:50:32.790Z"}

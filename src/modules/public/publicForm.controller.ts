@@ -12,11 +12,15 @@ import {
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from "@nestjs/swagger";
 import { PrismaService } from "../prisma/prisma.service";
 import { PublicFormDTO } from "./publicForm.dto";
+import { TelegramService } from "../telegram/telegram.service";
 
 @ApiTags("public/form")
 @Controller("public/form")
 export class PublicFormController {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private telegramService: TelegramService
+  ) {}
 
   @Post()
   @ApiCreatedResponse({ description: "Form submission stored" })
@@ -41,6 +45,11 @@ export class PublicFormController {
         userAgent,
         ip,
       },
+    });
+
+    void this.telegramService.notifyNewFormSubmission(created, {
+      ip,
+      userAgent,
     });
 
     return { id: created.id, createdAt: created.createdAt };

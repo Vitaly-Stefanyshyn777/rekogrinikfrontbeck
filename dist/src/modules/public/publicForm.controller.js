@@ -17,9 +17,11 @@ const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const prisma_service_1 = require("../prisma/prisma.service");
 const publicForm_dto_1 = require("./publicForm.dto");
+const telegram_service_1 = require("../telegram/telegram.service");
 let PublicFormController = class PublicFormController {
-    constructor(prisma) {
+    constructor(prisma, telegramService) {
         this.prisma = prisma;
+        this.telegramService = telegramService;
     }
     async submit(dto, userAgent, ip) {
         var _a;
@@ -39,6 +41,10 @@ let PublicFormController = class PublicFormController {
                 userAgent,
                 ip,
             },
+        });
+        void this.telegramService.notifyNewFormSubmission(created, {
+            ip,
+            userAgent,
         });
         return { id: created.id, createdAt: created.createdAt };
     }
@@ -116,7 +122,8 @@ __decorate([
 PublicFormController = __decorate([
     (0, swagger_1.ApiTags)("public/form"),
     (0, common_1.Controller)("public/form"),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        telegram_service_1.TelegramService])
 ], PublicFormController);
 exports.PublicFormController = PublicFormController;
 //# sourceMappingURL=publicForm.controller.js.map

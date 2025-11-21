@@ -5,9 +5,10 @@ import { PublicGalleryController } from "./publicGallery.controller";
 import { PublicHeroController } from "./publicHero.controller";
 import { GalleryPairsService } from "../gallery/gallery-pairs.service";
 import { PublicFormController } from "./publicForm.controller";
+import { TelegramModule } from "../telegram/telegram.module";
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, TelegramModule],
   controllers: [
     PublicContentController,
     PublicGalleryController,

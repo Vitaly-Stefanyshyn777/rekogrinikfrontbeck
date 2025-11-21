@@ -14,11 +14,12 @@ const publicGallery_controller_1 = require("./publicGallery.controller");
 const publicHero_controller_1 = require("./publicHero.controller");
 const gallery_pairs_service_1 = require("../gallery/gallery-pairs.service");
 const publicForm_controller_1 = require("./publicForm.controller");
+const telegram_module_1 = require("../telegram/telegram.module");
 let PublicModule = class PublicModule {
 };
 PublicModule = __decorate([
     (0, common_1.Module)({
-        imports: [prisma_module_1.PrismaModule],
+        imports: [prisma_module_1.PrismaModule, telegram_module_1.TelegramModule],
         controllers: [
             publicContent_controller_1.PublicContentController,
             publicGallery_controller_1.PublicGalleryController,
