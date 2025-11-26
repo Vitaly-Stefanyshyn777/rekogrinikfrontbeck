@@ -34,6 +34,10 @@ async function bootstrap() {
           origin.startsWith("http://localhost:") ||
           origin.startsWith("http://127.0.0.1:") ||
           origin === process.env.FRONTEND_URL ||
+          origin === "https://rekogrinik.cz" ||
+          origin.startsWith("https://rekogrinik.cz") ||
+          origin === "https://www.rekogrinik.cz" ||
+          origin.startsWith("https://www.rekogrinik.cz") ||
           origin === "https://rekogrinikadmin-production.up.railway.app" ||
           origin.startsWith(
             "https://rekogrinikadmin-production.up.railway.app"
