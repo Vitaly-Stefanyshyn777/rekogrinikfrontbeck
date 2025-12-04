@@ -28,41 +28,44 @@ async function bootstrap() {
   app.use(
     cors({
       origin: (origin, callback) => {
+        // Логування для діагностики (тільки в development)
+        if (process.env.NODE_ENV !== "production") {
+          console.log("CORS request from origin:", origin);
+        }
+
         // Дозволяємо всі localhost порти та Railway домени
-        if (
-          !origin ||
-          origin.startsWith("http://localhost:") ||
-          origin.startsWith("http://127.0.0.1:") ||
-          origin === process.env.FRONTEND_URL ||
-          origin === "https://rekogrinik.cz" ||
-          origin.startsWith("https://rekogrinik.cz") ||
-          origin === "https://www.rekogrinik.cz" ||
-          origin.startsWith("https://www.rekogrinik.cz") ||
-          origin === "https://rekogrinikadmin-production.up.railway.app" ||
-          origin.startsWith(
-            "https://rekogrinikadmin-production.up.railway.app"
-          ) ||
-          origin === "https://rekogrinikfront-production.up.railway.app" ||
-          origin.startsWith(
-            "https://rekogrinikfront-production.up.railway.app"
-          ) ||
-          origin === "https://rekogrinikfront-production-7069.up.railway.app" ||
-          origin.startsWith(
-            "https://rekogrinikfront-production-7069.up.railway.app"
-          ) ||
-          origin === "https://rekogrinikadmin-production-cf18.up.railway.app" ||
-          origin.startsWith(
-            "https://rekogrinikadmin-production-cf18.up.railway.app"
-          )
-        ) {
+        const allowedOrigins = [
+          !origin, // Дозволяємо запити без origin (наприклад, Postman)
+          origin?.startsWith("http://localhost:"),
+          origin?.startsWith("http://127.0.0.1:"),
+          origin === process.env.FRONTEND_URL,
+          origin === "https://rekogrinik.cz",
+          origin?.startsWith("https://rekogrinik.cz"),
+          origin === "https://www.rekogrinik.cz",
+          origin?.startsWith("https://www.rekogrinik.cz"),
+          origin === "https://rekogrinikadmin-production.up.railway.app",
+          origin?.startsWith("https://rekogrinikadmin-production.up.railway.app"),
+          origin === "https://rekogrinikfront-production.up.railway.app",
+          origin?.startsWith("https://rekogrinikfront-production.up.railway.app"),
+          origin === "https://rekogrinikfront-production-7069.up.railway.app",
+          origin?.startsWith("https://rekogrinikfront-production-7069.up.railway.app"),
+          origin === "https://rekogrinikadmin-production-cf18.up.railway.app",
+          origin?.startsWith("https://rekogrinikadmin-production-cf18.up.railway.app"),
+        ];
+
+        if (allowedOrigins.some((condition) => condition === true)) {
           callback(null, true);
         } else {
+          if (process.env.NODE_ENV !== "production") {
+            console.log("CORS blocked origin:", origin);
+          }
           callback(new Error("Not allowed by CORS"));
         }
       },
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       credentials: true,
-      allowedHeaders: ["Content-Type", "Authorization"],
+      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+      exposedHeaders: ["Content-Length", "Content-Type"],
     })
   );
 

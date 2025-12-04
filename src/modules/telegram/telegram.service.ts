@@ -94,27 +94,13 @@ export class TelegramService {
       `<b>Email:</b> ${submission.email ?? "—"}`,
       `<b>Тип робіт:</b> ${submission.workType ?? "—"}`,
       `<b>Адреса:</b> ${submission.address ?? "—"}`,
-      `<b>Час зв'язку:</b> ${submission.contactTime ?? "—"}`,
-      `<b>Повідомлення:</b>\n${submission.message ?? "—"}`,
-      "",
-      `<b>Згода на обробку:</b> ${submission.consent ? "✅" : "❌"}`,
-      `<b>Мова:</b> ${submission.locale ?? "—"}`,
-      `<b>Джерело:</b> ${
-        submission.source ? JSON.stringify(submission.source) : "—"
-      }`,
-      `<b>Файли:</b> ${
-        submission.files ? JSON.stringify(submission.files) : "—"
-      }`,
-      `<b>Створено:</b> ${submission.createdAt.toISOString()}`,
     ];
 
-    if (meta?.ip || meta?.userAgent) {
-      lines.push(
-        "",
-        `<b>IP:</b> ${meta.ip ?? "—"}`,
-        `<b>User-Agent:</b> ${meta.userAgent ?? "—"}`
-      );
+    if (submission.message) {
+      lines.push(`<b>Повідомлення:</b>\n${submission.message}`);
     }
+
+    lines.push(`<b>Створено:</b> ${submission.createdAt.toISOString()}`);
 
     return lines.join("\n");
   }
