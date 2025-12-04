@@ -100,7 +100,18 @@ export class TelegramService {
       lines.push(`<b>Повідомлення:</b>\n${submission.message}`);
     }
 
-    lines.push(`<b>Створено:</b> ${submission.createdAt.toISOString()}`);
+    // Форматуємо дату в читабельний формат: "04.12.2025, 22:58"
+    const date = new Date(submission.createdAt);
+    const formattedDate = date.toLocaleString("uk-UA", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Kyiv",
+    });
+
+    lines.push(`<b>Створено:</b> ${formattedDate}`);
 
     return lines.join("\n");
   }
