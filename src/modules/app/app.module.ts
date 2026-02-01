@@ -26,8 +26,8 @@ import { HeroModule } from "../hero/hero.module";
     UserModule,
     PostModule,
     ContentModule,
+    PublicModule, // Імпортуємо ПЕРШИМ, щоб публічні ендпоїнти мали пріоритет над захищеними
     GalleryModule,
-    PublicModule,
     UploadModule,
     HeroModule,
     ThrottlerModule.forRoot([

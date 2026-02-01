@@ -1,7 +1,10 @@
 import { Module } from "@nestjs/common";
 import { PrismaModule } from "../prisma/prisma.module";
 import { PublicContentController } from "./publicContent.controller";
-import { PublicGalleryController } from "./publicGallery.controller";
+import {
+  PublicGalleryController,
+  PublicGalleryControllerCompat,
+} from "./publicGallery.controller";
 import {
   PublicHeroController,
   PublicHeroControllerCompat,
@@ -14,9 +17,10 @@ import { TelegramModule } from "../telegram/telegram.module";
   imports: [PrismaModule, TelegramModule],
   controllers: [
     PublicContentController,
+    PublicGalleryControllerCompat, // Реєструємо ПЕРШИМ, щоб публічні ендпоїнти мали пріоритет
     PublicGalleryController,
+    PublicHeroControllerCompat, // Реєструємо ПЕРШИМ, щоб публічні ендпоїнти мали пріоритет
     PublicHeroController,
-    PublicHeroControllerCompat,
     PublicFormController,
   ],
   providers: [GalleryPairsService],

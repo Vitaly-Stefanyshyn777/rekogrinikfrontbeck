@@ -2,6 +2,51 @@ import { Controller, Get, Param, ParseIntPipe, Query } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { GalleryPairsService } from "../gallery/gallery-pairs.service";
 
+// Публічний контролер для сумісності з фронтендом (без префіксу public)
+@Controller("gallery")
+export class PublicGalleryControllerCompat {
+  constructor(
+    private prisma: PrismaService,
+    private pairsService: GalleryPairsService
+  ) {}
+
+  // Публічний ендпоїнт для отримання альбому за query параметром
+  @Get()
+  async getAlbumByQuery(@Query("album") albumName?: string) {
+    if (!albumName) {
+      // Якщо параметр не передано, повертаємо всі альбоми
+      return this.prisma.album.findMany({ orderBy: { createdAt: "desc" } });
+    }
+
+    // Шукаємо альбом за назвою або slug
+    const album = await this.prisma.album.findFirst({
+      where: {
+        OR: [
+          { name: { equals: albumName, mode: "insensitive" } },
+          { slug: { equals: albumName, mode: "insensitive" } },
+        ],
+      },
+    });
+
+    if (!album) {
+      return { photos: [], collections: [], pairs: [] };
+    }
+
+    const photos = await this.prisma.galleryPhoto.findMany({
+      where: { albumId: album.id },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Отримати пари з повною інформацією про фото
+    const pairs = await this.pairsService.getPairsWithPhotos(album.id);
+
+    // Отримати колекції
+    const collections = await this.pairsService.getCollections(album.id);
+
+    return { photos, pairs, collections };
+  }
+}
+
 @Controller("public/gallery")
 export class PublicGalleryController {
   constructor(
