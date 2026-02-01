@@ -27,55 +27,9 @@ async function bootstrap() {
 
   app.use(
     cors({
-      origin: (origin, callback) => {
-        // Логування для діагностики
-        console.log("CORS request from origin:", origin);
-
-        // Дозволяємо запити без origin (наприклад, Postman, мобільні додатки)
-        if (!origin) {
-          console.log("CORS: Allowing request without origin");
-          return callback(null, true);
-        }
-
-        // Список дозволених доменів
-        const allowedDomains = [
-          "https://rekogrinik.cz",
-          "https://www.rekogrinik.cz",
-          process.env.FRONTEND_URL,
-          "https://rekogrinikadmin-production.up.railway.app",
-          "https://rekogrinikfront-production.up.railway.app",
-          "https://rekogrinikfront-production-7069.up.railway.app",
-          "https://rekogrinikadmin-production-cf18.up.railway.app",
-        ].filter(Boolean); // Видаляємо undefined значення
-
-        // Перевірка точного співпадіння
-        if (allowedDomains.includes(origin)) {
-          console.log("CORS: Allowing exact match:", origin);
-          return callback(null, true);
-        }
-
-        // Перевірка localhost
-        if (
-          origin.startsWith("http://localhost:") ||
-          origin.startsWith("http://127.0.0.1:")
-        ) {
-          console.log("CORS: Allowing localhost:", origin);
-          return callback(null, true);
-        }
-
-        // Перевірка починається з дозволеного домену
-        const isAllowed = allowedDomains.some((domain) =>
-          origin.startsWith(domain)
-        );
-
-        if (isAllowed) {
-          console.log("CORS: Allowing domain match:", origin);
-          callback(null, true);
-        } else {
-          console.log("CORS: Blocking origin:", origin);
-          callback(new Error("Not allowed by CORS"));
-        }
-      },
+      // ⚠️ УВАГА: Дозволяємо всі домени для тестування
+      // Це небезпечно для production! Після тестування поверніть обмеження.
+      origin: true, // Дозволяємо всі origin
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       credentials: true,
       allowedHeaders: [
