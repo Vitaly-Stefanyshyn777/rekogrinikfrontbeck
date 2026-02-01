@@ -2,7 +2,10 @@ import { Module } from "@nestjs/common";
 import { PrismaModule } from "../prisma/prisma.module";
 import { PublicContentController } from "./publicContent.controller";
 import { PublicGalleryController } from "./publicGallery.controller";
-import { PublicHeroController } from "./publicHero.controller";
+import {
+  PublicHeroController,
+  PublicHeroControllerCompat,
+} from "./publicHero.controller";
 import { GalleryPairsService } from "../gallery/gallery-pairs.service";
 import { PublicFormController } from "./publicForm.controller";
 import { TelegramModule } from "../telegram/telegram.module";
@@ -13,6 +16,7 @@ import { TelegramModule } from "../telegram/telegram.module";
     PublicContentController,
     PublicGalleryController,
     PublicHeroController,
+    PublicHeroControllerCompat,
     PublicFormController,
   ],
   providers: [GalleryPairsService],

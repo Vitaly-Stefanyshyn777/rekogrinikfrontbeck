@@ -14,6 +14,42 @@ export class PublicGalleryController {
     return this.prisma.album.findMany({ orderBy: { createdAt: "desc" } });
   }
 
+  // Публічний ендпоїнт для отримання альбому за query параметром (для сумісності з фронтендом)
+  @Get()
+  async getAlbumByQuery(@Query("album") albumName?: string) {
+    if (!albumName) {
+      // Якщо параметр не передано, повертаємо всі альбоми
+      return this.prisma.album.findMany({ orderBy: { createdAt: "desc" } });
+    }
+
+    // Шукаємо альбом за назвою або slug
+    const album = await this.prisma.album.findFirst({
+      where: {
+        OR: [
+          { name: { equals: albumName, mode: "insensitive" } },
+          { slug: { equals: albumName, mode: "insensitive" } },
+        ],
+      },
+    });
+
+    if (!album) {
+      return { photos: [], collections: [], pairs: [] };
+    }
+
+    const photos = await this.prisma.galleryPhoto.findMany({
+      where: { albumId: album.id },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Отримати пари з повною інформацією про фото
+    const pairs = await this.pairsService.getPairsWithPhotos(album.id);
+
+    // Отримати колекції
+    const collections = await this.pairsService.getCollections(album.id);
+
+    return { photos, pairs, collections };
+  }
+
   @Get("albums/:slug")
   async getBySlug(@Param("slug") slug: string, @Query("tag") tag?: string) {
     const album = await this.prisma.album.findUnique({ where: { slug } });
