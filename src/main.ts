@@ -28,43 +28,63 @@ async function bootstrap() {
   app.use(
     cors({
       origin: (origin, callback) => {
-        // Логування для діагностики (тільки в development)
-        if (process.env.NODE_ENV !== "production") {
-          console.log("CORS request from origin:", origin);
+        // Логування для діагностики
+        console.log("CORS request from origin:", origin);
+
+        // Дозволяємо запити без origin (наприклад, Postman, мобільні додатки)
+        if (!origin) {
+          console.log("CORS: Allowing request without origin");
+          return callback(null, true);
         }
 
-        // Дозволяємо всі localhost порти та Railway домени
-        const allowedOrigins = [
-          !origin, // Дозволяємо запити без origin (наприклад, Postman)
-          origin?.startsWith("http://localhost:"),
-          origin?.startsWith("http://127.0.0.1:"),
-          origin === process.env.FRONTEND_URL,
-          origin === "https://rekogrinik.cz",
-          origin?.startsWith("https://rekogrinik.cz"),
-          origin === "https://www.rekogrinik.cz",
-          origin?.startsWith("https://www.rekogrinik.cz"),
-          origin === "https://rekogrinikadmin-production.up.railway.app",
-          origin?.startsWith("https://rekogrinikadmin-production.up.railway.app"),
-          origin === "https://rekogrinikfront-production.up.railway.app",
-          origin?.startsWith("https://rekogrinikfront-production.up.railway.app"),
-          origin === "https://rekogrinikfront-production-7069.up.railway.app",
-          origin?.startsWith("https://rekogrinikfront-production-7069.up.railway.app"),
-          origin === "https://rekogrinikadmin-production-cf18.up.railway.app",
-          origin?.startsWith("https://rekogrinikadmin-production-cf18.up.railway.app"),
-        ];
+        // Список дозволених доменів
+        const allowedDomains = [
+          "https://rekogrinik.cz",
+          "https://www.rekogrinik.cz",
+          process.env.FRONTEND_URL,
+          "https://rekogrinikadmin-production.up.railway.app",
+          "https://rekogrinikfront-production.up.railway.app",
+          "https://rekogrinikfront-production-7069.up.railway.app",
+          "https://rekogrinikadmin-production-cf18.up.railway.app",
+        ].filter(Boolean); // Видаляємо undefined значення
 
-        if (allowedOrigins.some((condition) => condition === true)) {
+        // Перевірка точного співпадіння
+        if (allowedDomains.includes(origin)) {
+          console.log("CORS: Allowing exact match:", origin);
+          return callback(null, true);
+        }
+
+        // Перевірка localhost
+        if (
+          origin.startsWith("http://localhost:") ||
+          origin.startsWith("http://127.0.0.1:")
+        ) {
+          console.log("CORS: Allowing localhost:", origin);
+          return callback(null, true);
+        }
+
+        // Перевірка починається з дозволеного домену
+        const isAllowed = allowedDomains.some((domain) =>
+          origin.startsWith(domain)
+        );
+
+        if (isAllowed) {
+          console.log("CORS: Allowing domain match:", origin);
           callback(null, true);
         } else {
-          if (process.env.NODE_ENV !== "production") {
-            console.log("CORS blocked origin:", origin);
-          }
+          console.log("CORS: Blocking origin:", origin);
           callback(new Error("Not allowed by CORS"));
         }
       },
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
       credentials: true,
-      allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+      allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "X-Requested-With",
+        "Accept",
+        "Origin",
+      ],
       exposedHeaders: ["Content-Length", "Content-Type"],
     })
   );
@@ -96,3 +116,4 @@ async function bootstrap() {
   });
 }
 bootstrap();
+
