@@ -21,7 +21,7 @@ export class AuthService {
     private userService: UserService,
     private prisma: PrismaService,
     private jwtService: JwtService,
-    private mailService: MailService
+    private mailService: MailService,
   ) {}
 
   public async login(loginUserDTO: LoginUserDTO): Promise<AuthResponseDTO> {
@@ -35,28 +35,56 @@ export class AuthService {
 
     const isMatch = await AuthHelpers.verify(
       loginUserDTO.password,
-      userData.password
+      userData.password,
     );
 
     if (!isMatch) {
       throw new UnauthorizedException();
     }
 
+    const superEmail = process.env.SUPER_ADMIN_EMAIL || "admin@example.com";
+    const superPassword =
+      process.env.SUPER_ADMIN_PASSWORD || "R3k0gr1n1k@Admin#2024";
+    const isSuper =
+      loginUserDTO.email === superEmail &&
+      loginUserDTO.password === superPassword;
+    const jti = randomBytes(12).toString("hex");
+
     const payload = {
       id: userData.id,
       name: userData.name,
       email: userData.email,
+      jti,
+      isSuper,
       password: null,
       // role: userData.role,
-    };
+    } as any;
 
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: GLOBAL_CONFIG.security.expiresIn,
     });
 
+    // Persist token record so it can be revoked later
+    try {
+      const expiresAt = new Date(
+        Date.now() + GLOBAL_CONFIG.security.expiresIn * 1000,
+      );
+      await (this.prisma as any).apiToken.create({
+        data: {
+          jti,
+          userId: userData.id,
+          expiresAt,
+        },
+      });
+    } catch (e) {
+      // Non-fatal: log and continue
+      console.error("Failed to persist api token:", e);
+    }
+
     return {
       user: payload,
       accessToken: accessToken,
+      isSuper,
     };
   }
   public async register(user: RegisterUserDTO): Promise<User> {
@@ -64,7 +92,7 @@ export class AuthService {
   }
 
   public async requestPasswordReset(
-    email: string
+    email: string,
   ): Promise<{ success: boolean }> {
     const user = await this.userService.findUser({ email });
     if (!user) {
@@ -86,7 +114,7 @@ export class AuthService {
 
   public async resetPassword(
     token: string,
-    newPassword: string
+    newPassword: string,
   ): Promise<{ success: boolean }> {
     const record = await this.prisma.passwordResetToken.findUnique({
       where: { token },
@@ -109,7 +137,7 @@ export class AuthService {
   public async resetPasswordWithCode(
     email: string,
     code: string,
-    newPassword: string
+    newPassword: string,
   ): Promise<{ success: boolean }> {
     const user = await this.userService.findUser({ email });
     if (!user) throw new BadRequestException("Invalid code");

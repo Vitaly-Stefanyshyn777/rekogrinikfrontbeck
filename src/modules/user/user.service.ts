@@ -1,7 +1,7 @@
-import { Prisma, User } from '@prisma/client';
-import { Injectable } from '@nestjs/common';
+import { Prisma, User } from "@prisma/client";
+import { Injectable, BadRequestException } from "@nestjs/common";
 
-import { PrismaService } from '../prisma/prisma.service';
+import { PrismaService } from "../prisma/prisma.service";
 
 @Injectable()
 export class UserService {
@@ -33,9 +33,16 @@ export class UserService {
   }
 
   async createUser(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({
-      data,
-    });
+    try {
+      return await this.prisma.user.create({ data });
+    } catch (e: any) {
+      console.error("createUser error", e);
+      // Surface Prisma errors as BadRequest for clearer client feedback
+      if (e && typeof e === "object" && "code" in e) {
+        throw new BadRequestException(e.message || "Database error");
+      }
+      throw e;
+    }
   }
 
   async updateUser(params: {

@@ -1,10 +1,10 @@
-import { ExtractJwt, Strategy } from 'passport-jwt';
-import { PassportStrategy } from '@nestjs/passport';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { ExtractJwt, Strategy } from "passport-jwt";
+import { PassportStrategy } from "@nestjs/passport";
+import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { User } from "@prisma/client";
 
-import { JWT_SECRET } from '../../shared/constants/global.constants';
-import { PrismaService } from '../prisma/prisma.service';
+import { JWT_SECRET } from "../../shared/constants/global.constants";
+import { PrismaService } from "../prisma/prisma.service";
 
 const cookieExtractor = (req) => req?.cookies.accessToken;
 
@@ -14,15 +14,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         ExtractJwt.fromAuthHeaderAsBearerToken(),
-        ExtractJwt.fromUrlQueryParameter('token'),
+        ExtractJwt.fromUrlQueryParameter("token"),
         cookieExtractor,
       ]),
-      ignoreExpiration: process.env.NODE_ENV === 'dev',
+      ignoreExpiration: process.env.NODE_ENV === "dev",
       secretOrKey: JWT_SECRET,
     });
   }
 
-  async validate(payload: User): Promise<User> {
+  async validate(payload: any): Promise<User> {
     const email = payload.email;
     const user = await this.prisma.user.findUnique({ where: { email } });
 
@@ -30,6 +30,21 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException();
     }
 
-    return user;
+    // If JWT contains jti, ensure token wasn't revoked
+    if (payload.jti) {
+      const tokenRecord = await (this.prisma as any).apiToken.findUnique({
+        where: { jti: payload.jti },
+      });
+
+      if (!tokenRecord || tokenRecord.revoked) {
+        throw new UnauthorizedException();
+      }
+
+      if (tokenRecord.expiresAt && tokenRecord.expiresAt < new Date()) {
+        throw new UnauthorizedException();
+      }
+    }
+
+    return { ...user, isSuper: payload.isSuper === true } as User;
   }
 }

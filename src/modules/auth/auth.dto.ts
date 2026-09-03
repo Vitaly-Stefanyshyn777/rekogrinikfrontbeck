@@ -7,6 +7,7 @@ import { INVALID_EMAIL } from "../../shared/constants/strings";
 export class AuthResponseDTO {
   user: User;
   accessToken: string;
+  isSuper?: boolean;
 }
 
 export class RegisterUserDTO {

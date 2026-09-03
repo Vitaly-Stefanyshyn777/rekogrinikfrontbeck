@@ -8,6 +8,8 @@ import { UserModule } from "../user/user.module";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { JwtStrategy } from "./auth.jwt.strategy";
+import { TokensController } from "./tokens.controller";
+import { TokensService } from "./tokens.service";
 import { MailModule } from "../mail/mail.module";
 
 @Module({
@@ -20,7 +22,7 @@ import { MailModule } from "../mail/mail.module";
       signOptions: { expiresIn: GLOBAL_CONFIG.security.expiresIn },
     }),
   ],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  controllers: [AuthController, TokensController],
+  providers: [AuthService, JwtStrategy, TokensService],
 })
 export class AuthModule {}
